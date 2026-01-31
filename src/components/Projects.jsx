@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import { projects, categories } from '../data/mock';
-import { ExternalLink, Layers, Users, TrendingUp } from 'lucide-react';
+import ProjectDetailModal from './ProjectDetailModal';
+import { ExternalLink, Layers, Users, TrendingUp, Eye } from 'lucide-react';
 
-const ProjectCard = ({ project, index, reducedMotion }) => (
+const ProjectCard = ({ project, index, reducedMotion, onViewDetails }) => (
   <motion.div
     layout
     initial={{ opacity: 0, y: 30 }}
@@ -25,11 +26,13 @@ const ProjectCard = ({ project, index, reducedMotion }) => (
           {project.category}
         </span>
         <motion.button
+          onClick={() => onViewDetails(project)}
           whileHover={{ scale: reducedMotion ? 1 : 1.1 }}
           whileTap={{ scale: reducedMotion ? 1 : 0.9 }}
           className="p-2 rounded-lg text-slate-400 hover:text-cyan-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+          title="View Details"
         >
-          <ExternalLink size={18} />
+          <Eye size={18} />
         </motion.button>
       </div>
 
@@ -64,7 +67,7 @@ const ProjectCard = ({ project, index, reducedMotion }) => (
     {/* Features */}
     <div className="px-6 pb-4">
       <div className="flex flex-wrap gap-2 mb-4">
-        {project.features.map((feature) => (
+        {project.features.slice(0, 3).map((feature) => (
           <span
             key={feature}
             className="px-2 py-1 text-xs bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-md"
@@ -75,10 +78,10 @@ const ProjectCard = ({ project, index, reducedMotion }) => (
       </div>
     </div>
 
-    {/* Tech Stack */}
+    {/* Tech Stack & View Details Button */}
     <div className="px-6 py-4 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-700">
-      <div className="flex flex-wrap gap-2">
-        {project.tech.map((tech) => (
+      <div className="flex flex-wrap gap-2 mb-4">
+        {project.tech.slice(0, 4).map((tech) => (
           <span
             key={tech}
             className="px-3 py-1 text-xs font-medium bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-full border border-slate-200 dark:border-slate-700"
@@ -86,7 +89,23 @@ const ProjectCard = ({ project, index, reducedMotion }) => (
             {tech}
           </span>
         ))}
+        {project.tech.length > 4 && (
+          <span className="px-3 py-1 text-xs font-medium bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-full border border-slate-200 dark:border-slate-700">
+            +{project.tech.length - 4} more
+          </span>
+        )}
       </div>
+      
+      {/* View Details Button */}
+      <motion.button
+        onClick={() => onViewDetails(project)}
+        whileHover={{ scale: reducedMotion ? 1 : 1.02 }}
+        whileTap={{ scale: reducedMotion ? 1 : 0.98 }}
+        className="w-full py-2.5 bg-cyan-500 hover:bg-cyan-600 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+      >
+        <Eye size={16} />
+        <span>View Project Details</span>
+      </motion.button>
     </div>
   </motion.div>
 );
@@ -94,10 +113,22 @@ const ProjectCard = ({ project, index, reducedMotion }) => (
 const Projects = () => {
   const { reducedMotion } = useTheme();
   const [activeCategory, setActiveCategory] = useState('All');
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const filteredProjects = activeCategory === 'All'
     ? projects
     : projects.filter(p => p.category === activeCategory);
+
+  const handleViewDetails = (project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setTimeout(() => setSelectedProject(null), 300);
+  };
 
   return (
     <section id="projects" className="py-20 lg:py-32 bg-slate-50 dark:bg-slate-900">
@@ -115,7 +146,7 @@ const Projects = () => {
             Projects I've Worked On
           </h2>
           <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            A collection of impactful projects across fintech, SaaS, and enterprise domains
+            A collection of impactful projects across fintech, SaaS, and enterprise domains. Click on any project to see detailed information.
           </p>
         </motion.div>
 
@@ -153,11 +184,19 @@ const Projects = () => {
                 project={project}
                 index={index}
                 reducedMotion={reducedMotion}
+                onViewDetails={handleViewDetails}
               />
             ))}
           </AnimatePresence>
         </motion.div>
       </div>
+
+      {/* Project Detail Modal */}
+      <ProjectDetailModal
+        project={selectedProject}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </section>
   );
 };
