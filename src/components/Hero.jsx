@@ -83,7 +83,7 @@ const CodeBlock = ({ reducedMotion }) => {
         <div className="w-3 h-3 rounded-full bg-red-500/80" />
         <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
         <div className="w-3 h-3 rounded-full bg-green-500/80" />
-        <span className="ml-4 text-xs text-slate-500 font-mono">developer.tsx</span>
+        <span className="ml-4 text-xs text-slate-500 font-mono">developer.cs</span>
       </div>
       
       {/* Code content */}
