@@ -1,4 +1,12 @@
 // Portfolio Data - M Usman Amjad
+import faisalHameed_Testimonials from "../imgs/professional/FaisalHameed_Testimonials.jpg";
+import talha_testimonials from "../imgs/professional/talha_testimonials.png";
+import Vlad__Testimonials from "../imgs/professional/Vlad__Testimonials.jpg";
+import Arthur_testimonials from "../imgs/clients/Arthur_testimonials.png";
+import Monika_testimonial from "../imgs/clients/Monika_testimonial.png";
+import tyler_testimonials from "../imgs/clients/tyler_testimonials.png";
+
+
 
 export const personalInfo = {
   name: "M Usman Amjad",
@@ -22,29 +30,29 @@ My expertise spans from developing efficient UIs and integrating complex APIs to
 export const professionalTestimonials = [
   {
     id: 1,
-    name: "Ahmed Hassan",
-    role: "Engineering Manager",
+    name: "Vladyslav Vorobiov",
+    role: "Senior Frontend Engineer",
     company: "Ciklum",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
-    text: "Usman is an exceptional engineer who consistently delivers high-quality code. His expertise in .NET and Azure has been instrumental in our Deloitte project. He's a great team player who mentors junior developers effectively.",
+    image: Vlad__Testimonials,
+    text: "I've been working with Usman as backend engineer on highly loaded web application for millions of clients over the world. I'd like to point out his professional strengths and technical knowledge in different backend tools and technologies. Really nice team member, always is ready to help with difficult tasks and questions. This is a pleasure to work with Usman in the one team!",
     rating: 5
   },
   {
     id: 2,
-    name: "Sarah Mitchell",
-    role: "Technical Lead",
+    name: "Faisal Hameed",
+    role: "Pricipal Software Engineer",
     company: "Tkxel",
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
-    text: "Working with Usman was a pleasure. His ability to understand complex business requirements and translate them into elegant technical solutions is remarkable. He played a key role in delivering our ProfitOptics platform.",
+    image: faisalHameed_Testimonials,
+    text: "I had the pleasure of working closely with Usman Amjad, and I can confidently say he is one of the most talented and dedicated full stack software developers I have encountered. Usman consistently demonstrates a deep understanding of both front-end and back-end development, showcasing his ability to seamlessly integrate complex features and optimize performance across the stack. His problem-solving skills are top-notch, and he always approaches challenges with a calm, logical mindset. Whether it’s debugging a complex issue or coming up with innovative solutions, Usman is quick to dive deep into the problem and provide a clear, efficient path forward. Moreover, Usman is a great team player. He communicates effectively, is always open to feedback, and is quick to assist his colleagues when needed. His positive attitude and dedication to continuous improvement make him a valuable asset to any team. I highly recommend Usman for any role that requires a skilled and versatile full stack developer.",
     rating: 5
   },
   {
     id: 3,
-    name: "Muhammad Ali",
-    role: "Senior Developer",
-    company: "Autosoft Dynamics",
-    image: "https://randomuser.me/api/portraits/men/22.jpg",
-    text: "Usman's fintech expertise and problem-solving skills are outstanding. He led critical data migrations and implemented core banking integrations flawlessly. A true professional who raises the bar for the entire team.",
+    name: "Talha Munir",
+    role: "Co-Founder",
+    company: "Netfication",
+    image: talha_testimonials,
+    text: "I highly recommend Usman based on our work together. Beyond his strong coding abilities, Usman stands out for his proactive communication and his 'can-do' attitude toward challenging bugs. He doesn't just write code; he thinks about the long-term health of the product. He was a dependable teammate who always shared knowledge and helped elevate the work of those around him. 👏",
     rating: 5
   }
 ];
@@ -53,47 +61,36 @@ export const professionalTestimonials = [
 export const clientTestimonials = [
   {
     id: 1,
-    name: "James Wilson",
-    role: "CEO",
-    company: "TechStart Inc.",
+    name: "Tyler Shaw",
+    role: "Business Development Manager",
+    company: "Range Marketing",
     location: "United States",
-    image: "https://randomuser.me/api/portraits/men/75.jpg",
-    text: "Usman delivered our e-commerce automation platform ahead of schedule. His communication was excellent, and he went above and beyond to ensure every feature worked perfectly. Highly recommend!",
+    image: tyler_testimonials,
+    text: " If you're reading this, obviously you're probably interested in working with Usman here. Just wanna let you know, fantastic to work with. His response rate is incredible. He'll hop on video calls, elaborate everything, bring everything out to detail. In his proposals, he brings everything to detail. Very fair and honest guy. I would recommend Usman to anyone looking for his IT services. He's been great to work with. And we had a lot of fun too. It felt more of a partnership than just a business transaction. So again, really appreciate everything you've done for me, Usman, and I look forward to referring and working with Usman as well in the future here.",
     rating: 5,
     platform: "Upwork"
   },
   {
     id: 2,
-    name: "Emma Thompson",
-    role: "Product Manager",
-    company: "EduGlobal",
-    location: "United Kingdom",
-    image: "https://randomuser.me/api/portraits/women/65.jpg",
-    text: "We hired Usman to build our study-abroad management platform. He understood our vision immediately and delivered a scalable solution that now serves students across 50+ countries. Exceptional work!",
-    rating: 5,
-    platform: "Direct"
-  },
-  {
-    id: 3,
-    name: "Michael Chen",
-    role: "Founder",
-    company: "PetFresh Co.",
-    location: "Canada",
-    image: "https://randomuser.me/api/portraits/men/52.jpg",
-    text: "Usman transformed our subscription platform completely. The new system reduced our manual tasks by 60% and our customers love the improved experience. He's now our go-to developer for all projects.",
+    name: "Monika Sparring",
+    role: "Project Manager",
+    company: "Sparring",
+    location: "Denmark",
+    image: Monika_testimonial,
+    text: "Usman was a great collaborator throughout the project. He understood what the project needed, communicated well, and was always easy to reach. His skill and professionalism made everything run smoothly, and he has my highest recommendations.",
     rating: 5,
     platform: "Upwork"
   },
   {
-    id: 4,
-    name: "Lisa Anderson",
-    role: "Operations Director",
-    company: "StoragePlus",
-    location: "Australia",
-    image: "https://randomuser.me/api/portraits/women/33.jpg",
-    text: "Outstanding developer! Usman built our self-storage operations platform with incredible attention to detail. The mobile app he developed has significantly improved our tenant satisfaction scores.",
+    id: 3,
+    name: "Arthur J. ",
+    role: "Chief Executive Officer",
+    company: "Emformance",
+    location: "United States",
+    image: Arthur_testimonials,
+    text: "Usman is an amazing, professional and very trust worthy Freelancer. My work with him was completely beyond my expectations. I will recommend him anyday and invite him to any software project I have.",
     rating: 5,
-    platform: "Direct"
+    platform: "Upwork"
   }
 ];
 
@@ -106,7 +103,7 @@ export const skills = {
     { name: "HTML/CSS", level: 85 }
   ],
   frameworks: [
-    { name: ".NET 6/8", level: 95 },
+    { name: ".NET", level: 95 },
     { name: "ASP.NET Core", level: 95 },
     { name: "React.js", level: 90 },
     { name: "Entity Framework Core", level: 90 },
