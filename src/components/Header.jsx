@@ -53,7 +53,7 @@ const Header = () => {
             whileHover={{ scale: reducedMotion ? 1 : 1.05 }}
           >
             <span className="text-cyan-500">&lt;</span>
-            <span>Usman</span>
+            <span>usmanamjad.dev</span>
             <span className="text-cyan-500">/&gt;</span>
           </motion.a>
 

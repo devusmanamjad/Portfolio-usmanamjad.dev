@@ -2,9 +2,11 @@
 import faisalHameed_Testimonials from "../imgs/professional/FaisalHameed_Testimonials.jpg";
 import talha_testimonials from "../imgs/professional/talha_testimonials.png";
 import Vlad__Testimonials from "../imgs/professional/Vlad__Testimonials.jpg";
-import Arthur_testimonials from "../imgs/clients/Arthur_testimonials.png";
+import Arthur_testimonials from "../imgs/clients/Arthur_testimonials.jpg";
 import Monika_testimonial from "../imgs/clients/Monika_testimonial.png";
 import tyler_testimonials from "../imgs/clients/tyler_testimonials.png";
+import usmanamjad from "../imgs/others/usmanamjadmain.jpeg";
+
 
 
 
@@ -17,13 +19,14 @@ export const personalInfo = {
   location: "Lahore, Pakistan",
   linkedin: "https://linkedin.com/in/musmanamjad1",
   github: "https://github.com/devusmanamjad",
-  upwork: "https://www.upwork.com/freelancers/raheem",
-  twitter: "https://twitter.com/usmanamjad_dev",
-  photo: "https://customer-assets.emergentagent.com/job_e9cf7992-ed2e-48c4-bd9f-f04fd6499616/artifacts/7zea1djo_1732606616323.jpeg",
-  about: `Results-driven Software Engineer with around 5 years of experience specializing in .NET Core, React.js, and Azure Cloud. I've built scalable applications for fintech, SaaS, and enterprise solutions that serve thousands of users daily.
+  upwork: "https://www.upwork.com/freelancers/~0191bd47d8180a628a",
+  twitter: "",
+  whatsapp: "https://wa.me/923428724610?text=Hi,%20I’m%20Usman,%20a%20passionate%20Full%20Stack%20Developer.%20For%20quick%20discussions%20and%20inquiries,%20you%20can%20connect%20with%20me%20on%20WhatsApp%20directly:",
+  photo: usmanamjad,
+  about: `Results-driven Software Engineer with over around 5 years of experience specializing in .NET Core, React.js, and Azure Cloud. I've built scalable applications for fintech, SaaS, and enterprise solutions that serve thousands of users daily.
 
 My expertise spans from developing efficient UIs and integrating complex APIs to delivering high-performance cloud solutions. I'm passionate about improving system architecture and maintaining software quality standards that meet diverse client needs across global teams.`,
-  resumeUrl: "#"
+  resumeUrl: "https://drive.google.com/file/d/1SQysf0RrEqzeeYOcizUcMzBsWnSml6H7/view?usp=sharing"
 };
 
 // Professional Testimonials (from colleagues, managers, team leads)
@@ -325,42 +328,42 @@ export const projects = [
       "Decreased payment reconciliation time by 75%"
     ]
   },
-  {
-    id: 5,
-    name: "Global Study-Abroad Platform",
-    category: "SaaS",
-    description: "SaaS platform connecting universities and students across 50+ countries.",
-    role: "Full-Stack Developer",
-    tech: [".NET Core", "React.js", "Azure SQL", "REST APIs"],
-    features: ["Application management", "University partnerships", "Real-time sync"],
-    industry: "Education",
-    team: "Global",
-    metrics: "40% reduction in processing time",
-    // Extended Details
-    fullDescription: "A comprehensive SaaS platform that streamlines the study-abroad application process, connecting students with partner universities across 50+ countries. Manages applications, documents, payments, and communications in one unified system.",
-    duration: "10 months",
-    teamSize: "8 engineers",
-    responsibilities: [
-      "Built full-stack features using .NET Core backend and React.js frontend",
-      "Designed application workflow engine supporting complex approval chains",
-      "Implemented real-time notifications and messaging system",
-      "Developed document management system with OCR capabilities",
-      "Created analytics dashboards for university partners",
-      "Built REST APIs for third-party integrations"
-    ],
-    challenges: [
-      "Supporting diverse application requirements across 50+ countries",
-      "Managing complex document verification workflows",
-      "Ensuring data privacy compliance (GDPR, local regulations)",
-      "Scaling to handle seasonal application surges"
-    ],
-    outcomes: [
-      "40% reduction in application processing time",
-      "Onboarded 200+ university partners globally",
-      "Processed 50,000+ applications in first year",
-      "Achieved 98% user satisfaction rating"
-    ]
-  },
+  // {
+  //   id: 5,
+  //   name: "Global Study-Abroad Platform",
+  //   category: "SaaS",
+  //   description: "SaaS platform connecting universities and students across 50+ countries.",
+  //   role: "Full-Stack Developer",
+  //   tech: [".NET Core", "React.js", "Azure SQL", "REST APIs"],
+  //   features: ["Application management", "University partnerships", "Real-time sync"],
+  //   industry: "Education",
+  //   team: "Global",
+  //   metrics: "40% reduction in processing time",
+  //   // Extended Details
+  //   fullDescription: "A comprehensive SaaS platform that streamlines the study-abroad application process, connecting students with partner universities across 50+ countries. Manages applications, documents, payments, and communications in one unified system.",
+  //   duration: "10 months",
+  //   teamSize: "8 engineers",
+  //   responsibilities: [
+  //     "Built full-stack features using .NET Core backend and React.js frontend",
+  //     "Designed application workflow engine supporting complex approval chains",
+  //     "Implemented real-time notifications and messaging system",
+  //     "Developed document management system with OCR capabilities",
+  //     "Created analytics dashboards for university partners",
+  //     "Built REST APIs for third-party integrations"
+  //   ],
+  //   challenges: [
+  //     "Supporting diverse application requirements across 50+ countries",
+  //     "Managing complex document verification workflows",
+  //     "Ensuring data privacy compliance (GDPR, local regulations)",
+  //     "Scaling to handle seasonal application surges"
+  //   ],
+  //   outcomes: [
+  //     "40% reduction in application processing time",
+  //     "Onboarded 200+ university partners globally",
+  //     "Processed 50,000+ applications in first year",
+  //     "Achieved 98% user satisfaction rating"
+  //   ]
+  // },
   {
     id: 6,
     name: "Fresh Pet-Food Subscription",
@@ -399,7 +402,7 @@ export const projects = [
   },
   {
     id: 7,
-    name: "Self-Storage Operations Platform",
+    name: "XPS Solution - Self-Storage Operations Platform",
     category: "Enterprise",
     description: "Platform for 24/7 call-centre support and remote facility management.",
     role: "Full-Stack Developer",

@@ -2,12 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import { personalInfo } from '../data/mock';
-import { ArrowDown, Github, Linkedin, Mail, Code2, Database, Cloud, Terminal, Twitter } from 'lucide-react';
+import { ArrowDown, Github, Linkedin, Mail, Code2, Database, Cloud, Terminal, Twitter, Phone } from 'lucide-react';
 
 // Upwork icon component
 const UpworkIcon = ({ size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
     <path d="M18.561 13.158c-1.102 0-2.135-.467-3.074-1.227l.228-1.076.008-.042c.207-1.143.849-3.06 2.839-3.06 1.492 0 2.703 1.212 2.703 2.703-.001 1.489-1.212 2.702-2.704 2.702zm0-8.14c-2.539 0-4.51 1.649-5.31 4.366-1.22-1.834-2.148-4.036-2.687-5.892H7.828v7.112c-.002 1.406-1.141 2.546-2.547 2.546-1.405 0-2.543-1.14-2.545-2.546V3.492H0v7.112c0 2.914 2.37 5.303 5.281 5.303 2.913 0 5.283-2.389 5.283-5.303v-1.19c.529 1.107 1.182 2.229 1.974 3.221l-1.673 7.873h2.797l1.213-5.71c1.063.679 2.285 1.109 3.686 1.109 3 0 5.439-2.452 5.439-5.45 0-3-2.439-5.439-5.439-5.439z"/>
+  </svg>
+);
+
+// WhatsApp icon component
+const WhatsAppIcon = ({ size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M20.52 3.48A11.82 11.82 0 0 0 12.02 0C5.4 0 .02 5.38.02 12c0 2.11.55 4.17 1.6 5.99L0 24l6.17-1.58A11.96 11.96 0 0 0 12.02 24C18.63 24 24 18.62 24 12c0-3.2-1.25-6.2-3.48-8.52zM12.02 22a9.97 9.97 0 0 1-5.08-1.39l-.36-.22-3.66.94.98-3.57-.24-.37A9.92 9.92 0 0 1 2.02 12c0-5.52 4.49-10 10-10 2.67 0 5.18 1.04 7.06 2.93A9.93 9.93 0 0 1 22.02 12c0 5.51-4.49 10-10 10zm5.76-7.45c-.31-.16-1.84-.91-2.12-1.01-.28-.1-.49-.16-.69.16-.2.31-.79 1.01-.97 1.22-.18.2-.36.23-.67.08-.31-.16-1.29-.48-2.46-1.52-.91-.81-1.53-1.82-1.71-2.13-.18-.31-.02-.48.13-.64.14-.14.31-.36.46-.54.16-.18.2-.31.31-.51.1-.2.05-.39-.03-.54-.08-.16-.69-1.66-.95-2.28-.25-.6-.5-.52-.69-.53l-.59-.01c-.2 0-.53.08-.81.39-.28.31-1.06 1.04-1.06 2.53s1.09 2.94 1.24 3.14c.16.2 2.14 3.27 5.19 4.59.73.31 1.3.5 1.74.64.73.23 1.39.2 1.92.12.58-.09 1.84-.75 2.1-1.47.26-.72.26-1.33.18-1.47-.08-.13-.28-.2-.59-.36z" />
   </svg>
 );
 
@@ -48,9 +55,9 @@ const CodeBlock = ({ reducedMotion }) => {
   const codeLines = [
     { text: 'const developer = {', indent: 0, color: 'text-cyan-400' },
     { text: 'name: "Usman Amjad",', indent: 2, color: 'text-emerald-400' },
-    { text: 'role: "Senior Engineer",', indent: 2, color: 'text-emerald-400' },
-    { text: 'skills: ["C#", ".NET", "React"],', indent: 2, color: 'text-amber-400' },
-    { text: 'passion: "Building Solutions"', indent: 2, color: 'text-purple-400' },
+    { text: 'role: "Senior Software Engineer",', indent: 2, color: 'text-emerald-400' },
+    { text: 'skills: ["C#", ".NET", "Azure", "React"],', indent: 2, color: 'text-amber-400' },
+    { text: 'passion: "Crafting Scalable Solutions"', indent: 2, color: 'text-purple-400' },
     { text: '};', indent: 0, color: 'text-cyan-400' },
   ];
 
@@ -229,7 +236,7 @@ const Hero = () => {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left - Text content */}
             <div>
-              <motion.div
+              {/* <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: reducedMotion ? 0 : 0.6 }}
@@ -237,7 +244,7 @@ const Hero = () => {
                 <span className="inline-block px-4 py-2 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 text-sm font-medium mb-6 border border-cyan-500/20">
                   ✨ Available for opportunities
                 </span>
-              </motion.div>
+              </motion.div> */}
 
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
@@ -329,13 +336,13 @@ const Hero = () => {
                   <UpworkIcon size={20} />
                 </a>
                 <a
-                  href={personalInfo.twitter}
+                  href={personalInfo.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-sky-500 dark:hover:text-sky-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all hover:scale-110"
-                  title="Twitter"
+                  title="Whatsapp"
                 >
-                  <Twitter size={20} />
+                  <WhatsAppIcon size={20} />
                 </a>
                 <a
                   href={`mailto:${personalInfo.email}`}

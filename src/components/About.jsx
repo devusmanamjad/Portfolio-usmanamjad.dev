@@ -121,6 +121,8 @@ const About = () => {
               </motion.a>
               <motion.a
                 href={personalInfo.resumeUrl}
+                target='_blank'
+                rel="noopener noreferrer"
                 className="px-6 py-3 border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:border-cyan-500 hover:text-cyan-500 font-medium rounded-xl transition-colors"
                 whileHover={{ scale: reducedMotion ? 1 : 1.05 }}
                 whileTap={{ scale: reducedMotion ? 1 : 0.95 }}

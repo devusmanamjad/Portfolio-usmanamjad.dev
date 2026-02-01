@@ -45,7 +45,7 @@ const Contact = () => {
       icon: Phone,
       label: 'WhatsApp',
       value: personalInfo.phone,
-      href: `https://wa.me/${personalInfo.phone.replace(/[^0-9]/g, '')}`
+      href: "https://wa.me/923428724610?text=Hi,%20I’m%20Usman,%20a%20passionate%20Full%20Stack%20Developer.%20For%20quick%20discussions%20and%20inquiries,%20you%20can%20connect%20with%20me%20on%20WhatsApp%20directly:"
     },
     {
       icon: MapPin,
