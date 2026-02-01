@@ -125,9 +125,9 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-slate-400 text-sm flex items-center gap-1">
-              © {currentYear} {personalInfo.name}. Built with
-              <Heart size={14} className="text-red-500 fill-red-500" />
-              using React & Three.js
+              © {currentYear} {personalInfo.name}. Only for portfolio showcase.
+              {/* <Heart size={14} className="text-red-500 fill-red-500" />
+              using React & Three.js */}
             </p>
 
             {/* Back to Top */}
