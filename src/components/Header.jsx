@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import { Sun, Moon, Menu, X, Zap } from 'lucide-react';
+import  WhiteLogo  from '../imgs/others/White.png';
+import  BlackLogo  from '../imgs/others/Black.png';
+
+
 
 const Header = () => {
   const { theme, toggleTheme, reducedMotion, toggleReducedMotion } = useTheme();
@@ -47,7 +51,26 @@ const Header = () => {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <motion.a
+<motion.a
+  href="#"
+  className="flex items-center gap-2"
+  whileHover={{ scale: reducedMotion ? 1 : 1.05 }}
+>
+  {/* Light theme */}
+  <img
+    src={BlackLogo}
+    alt="Usman Amjad Logo"
+    className="block h-8 dark:hidden"
+  />
+
+  {/* Dark theme */}
+  <img
+    src={WhiteLogo}
+    alt="Usman Amjad Logo"
+    className="hidden h-8 dark:block"
+  />
+</motion.a>
+          {/* <motion.a
             href="#"
             className="flex items-center gap-2 text-xl font-bold text-slate-900 dark:text-white"
             whileHover={{ scale: reducedMotion ? 1 : 1.05 }}
@@ -55,7 +78,7 @@ const Header = () => {
             <span className="text-cyan-500">&lt;</span>
             <span>usmanamjad.dev</span>
             <span className="text-cyan-500">/&gt;</span>
-          </motion.a>
+          </motion.a> */}
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
