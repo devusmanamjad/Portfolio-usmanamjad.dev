@@ -10,7 +10,7 @@ const About = () => {
   const stats = [
     { value: '5+', label: 'Years Experience' },
     { value: '10+', label: 'Projects Delivered' },
-    { value: '3', label: 'Countries Worked' },
+    // { value: '3', label: 'Countries Worked' },
     { value: '99%', label: 'Client Satisfaction' },
   ];
 
