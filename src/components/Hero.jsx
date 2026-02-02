@@ -326,7 +326,7 @@ const Hero = () => {
                 >
                   <Linkedin size={20} />
                 </a>
-                <a
+                {/* <a
                   href={personalInfo.upwork}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -334,7 +334,7 @@ const Hero = () => {
                   title="Upwork"
                 >
                   <UpworkIcon size={20} />
-                </a>
+                </a> */}
                 <a
                   href={personalInfo.whatsapp}
                   target="_blank"

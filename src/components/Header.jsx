@@ -98,7 +98,7 @@ const Header = () => {
           {/* Controls */}
           <div className="flex items-center gap-2">
             {/* Reduced Motion Toggle */}
-            <motion.button
+            {/* <motion.button
               onClick={toggleReducedMotion}
               className={`p-2 rounded-lg transition-colors ${
                 reducedMotion
@@ -110,7 +110,7 @@ const Header = () => {
               title={reducedMotion ? 'Enable Motion' : 'Reduce Motion'}
             >
               <Zap size={20} className={reducedMotion ? 'opacity-50' : ''} />
-            </motion.button>
+            </motion.button> */}
 
             {/* Theme Toggle */}
             <motion.button

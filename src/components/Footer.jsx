@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import { personalInfo } from '../data/mock';
 import { Github, Linkedin, Mail, Heart, ArrowUp, Twitter } from 'lucide-react';
+import  WhiteLogo  from '../imgs/others/White.png';
+import  BlackLogo  from '../imgs/others/Black.png';
 
 // Upwork icon component
 const UpworkIcon = ({ size = 20 }) => (
@@ -44,7 +46,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <motion.a
+            {/* <motion.a
               href="#"
               className="inline-flex items-center gap-2 text-2xl font-bold mb-4"
               whileHover={{ scale: reducedMotion ? 1 : 1.05 }}
@@ -52,7 +54,19 @@ const Footer = () => {
               <span className="text-cyan-500">&lt;</span>
               <span>Usman</span>
               <span className="text-cyan-500">/&gt;</span>
-            </motion.a>
+            </motion.a> */}
+            <motion.a
+  href="#"
+  className="inline-flex items-center gap-2 mb-4"
+  whileHover={{ scale: reducedMotion ? 1 : 1.05 }}
+>
+  {/* Dark theme */}
+  <img
+    src={WhiteLogo}
+    alt="Usman Amjad Logo"
+    className="hidden h-10 dark:block"
+  />
+</motion.a>
             <p className="text-slate-400 mb-6 max-w-md leading-relaxed">
               Senior Software Engineer specializing in .NET Core, React.js, and Azure Cloud. 
               Building scalable solutions for fintech, SaaS, and enterprise applications.

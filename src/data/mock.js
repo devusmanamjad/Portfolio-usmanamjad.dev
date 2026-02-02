@@ -115,6 +115,8 @@ export const skills = {
   cloud: [
     { name: "Azure Service Bus", level: 90 },
     { name: "Azure Functions", level: 85 },
+    { name: "Azure Key Vault", level: 85 },
+    { name: "Azure Application Insights", level: 85 },
     { name: "Azure SQL", level: 90 },
     { name: "Docker", level: 85 },
     { name: "Kubernetes (AKS)", level: 80 }
@@ -135,7 +137,7 @@ export const experiences = [
     id: 1,
     role: "Mid-Level Software Engineer",
     company: "Ciklum",
-    project: "Deloitte US Tax",
+    project: "Deloitte US",
     location: "Lahore, Pakistan (Remote)",
     period: "Feb 2025 – Present",
     type: "current",
@@ -147,7 +149,7 @@ export const experiences = [
       "Ownership of unit & integration tests, raising code coverage across services",
       "Collaborating with multi-national team across time zones"
     ],
-    tech: [".NET Core", "Azure", "Docker", "Kubernetes", "Azure Service Bus"]
+    tech: [".NET", "Microservices", "Azure Service Bus", "Azure SQL", "Azure Key Vault", "Azure Application Insights", "Docker", "Kubernetes", "CI/CD", "Github Actions"]
   },
   {
     id: 2,
@@ -192,16 +194,16 @@ export const projects = [
     category: "Enterprise",
     description: "Enterprise tax platform with microservices architecture for Deloitte US.",
     role: "Software Engineer",
-    tech: [".NET Core", "Azure Service Bus", "Docker", "Kubernetes", "Azure SQL"],
+    tech: [".NET Core",  "Microservices", "Azure Service Bus", "Azure SQL", "Azure Key Vault", "Azure Application Insights", "Docker", "Kubernetes"],
     features: ["Event-driven architecture", "Distributed tracing", "CI/CD pipelines"],
-    industry: "Tax & Finance",
+    industry: "Tax & Finance Consultancy",
     team: "Multi-national",
     // Extended Details
     fullDescription: "A comprehensive enterprise tax platform serving thousands of tax professionals across the United States. The platform handles complex tax calculations, document management, and compliance workflows for one of the world's largest professional services firms.",
     duration: "Feb 2025 - Present",
     teamSize: "20+ engineers across US, Europe, and Asia",
     responsibilities: [
-      "Designed and implemented event-driven microservices using .NET Core and Azure Service Bus",
+      "Designed and implemented event-driven microservices using .NET and Azure Service Bus",
       "Containerized services with Docker and orchestrated deployments via Kubernetes (AKS)",
       "Built resilient APIs with retry patterns, circuit breakers, and poison-queue strategies",
       "Implemented distributed tracing and structured logging for observability",
@@ -209,16 +211,15 @@ export const projects = [
       "Collaborated with architects on system design decisions and technical documentation"
     ],
     challenges: [
-      "Ensuring 99.9% uptime during peak tax season with millions of concurrent users",
+      "Ensuring maximum uptime and deal with the Dev and QA related bugs.",
       "Managing complex data consistency across distributed microservices",
       "Meeting strict compliance requirements for sensitive tax data",
       "Coordinating deployments across multiple time zones with zero downtime"
     ],
     outcomes: [
-      "Successfully processing thousands of concurrent tax calculations",
+      "Successfully processing thousands of concurrent tax and financial calculations",
       "Reduced deployment time from hours to minutes with automated CI/CD",
       "Achieved target code coverage across all services",
-      "Zero-downtime deployments to production"
     ]
   },
   {
@@ -231,7 +232,6 @@ export const projects = [
     features: ["Bulk listing automation", "Pricing optimization", "Inventory sync"],
     industry: "E-Commerce",
     team: "Cross-functional",
-    metrics: "45% increase in listing throughput",
     // Extended Details
     fullDescription: "A powerful SaaS platform designed for high-volume marketplace sellers to automate their product listing, pricing strategies, and inventory management across multiple e-commerce platforms including Amazon, eBay, and Walmart.",
     duration: "8 months",
@@ -246,12 +246,11 @@ export const projects = [
     ],
     challenges: [
       "Handling rate limits from various marketplace APIs efficiently",
-      "Processing millions of SKUs without impacting system performance",
+      "Processing thousands of SKUs without impacting system performance",
       "Maintaining real-time inventory sync across multiple platforms",
       "Building a user-friendly interface for complex bulk operations"
     ],
     outcomes: [
-      "45% increase in listing throughput for sellers",
       "Reduced inventory sync delays from hours to minutes",
       "Platform handles 10x more concurrent operations than before",
       "Improved seller retention by 35%"
@@ -263,13 +262,13 @@ export const projects = [
     category: "Enterprise",
     description: "Enterprise platform for advanced analytics, pricing intelligence, and process automation.",
     role: "Senior Developer",
-    tech: [".NET Core", "React.js", "Azure", "EF Core", "PowerBI"],
+    tech: [".NET Core", "React.js", "Azure", "EF Core", "Reporting"],
     features: ["Real-time dashboards", "Margin analytics", "Process automation"],
     industry: "Enterprise",
-    team: "US, India, Portugal",
-    metrics: "70% improvement in reporting speed",
+    team: "US, India, Portugal, Pakistan",
     // Extended Details
     fullDescription: "An enterprise-grade analytics platform that provides real-time insights into profit margins, pricing strategies, and operational efficiency. Used by Fortune 500 companies to make data-driven decisions that impact millions in revenue.",
+    metrics: "Maximumized to 39% sales margin",
     duration: "1 year",
     teamSize: "12 engineers across 3 countries",
     responsibilities: [
@@ -301,12 +300,12 @@ export const projects = [
     role: "Backend Developer",
     tech: ["ASP.NET MVC", ".NET Core", "Azure", "Stripe", "PayPal"],
     features: ["Multi-gateway payments", "Auto-invoicing", "Currency exchange"],
-    industry: "Fintech",
+    industry: "Education",
     team: "Distributed",
     // Extended Details
     fullDescription: "A robust payment processing module integrated into an international student exchange program platform. Handles multi-currency transactions, automated invoicing, and compliance with international payment regulations.",
-    duration: "6 months",
-    teamSize: "4 engineers",
+    duration: "1 Year",
+    teamSize: "10 engineers",
     responsibilities: [
       "Designed and implemented payment gateway integrations (Stripe, PayPal, ACH)",
       "Built automated invoicing system with multi-currency support",
@@ -413,7 +412,7 @@ export const projects = [
     // Extended Details
     fullDescription: "A comprehensive platform enabling remote management of self-storage facilities across multiple locations. Includes a call center management system, tenant mobile app, and automated payment processing for seamless 24/7 operations.",
     duration: "9 months",
-    teamSize: "7 engineers",
+    teamSize: "2 engineers",
     responsibilities: [
       "Developed backend APIs for facility management operations",
       "Built React Native mobile app for tenant self-service",
@@ -448,7 +447,7 @@ export const projects = [
     // Extended Details
     fullDescription: "A comprehensive Loan Management System for Al Baraka Bank supporting both Islamic (Shariah-compliant) and conventional banking products. Handles the complete loan lifecycle from application to disbursement and repayment tracking.",
     duration: "2 years",
-    teamSize: "15 engineers",
+    teamSize: "56 engineers",
     responsibilities: [
       "Developed core loan processing modules using .NET Core MVC",
       "Implemented Islamic finance products (Ijarah, Mudaraba, Musharakah)",
@@ -480,7 +479,6 @@ export const caseStudies = [
     context: "Deloitte needed to modernize their enterprise tax platform to handle thousands of concurrent users and complex tax calculations across multiple jurisdictions.",
     problem: "Legacy monolithic architecture was causing scalability issues, slow deployments, and difficulty in maintaining compliance across different tax regions.",
     constraints: [
-      "Must maintain 99.9% uptime during migration",
       "Strict compliance requirements for tax data",
       "Multi-region deployment requirements",
       "Integration with existing Deloitte systems"
@@ -506,7 +504,7 @@ export const caseStudies = [
       "Zero-downtime deployments to production"
     ],
     improvements: "Would explore implementing CQRS pattern for complex read scenarios and adding more sophisticated caching strategies.",
-    tech: [".NET Core", "Azure", "Docker", "Kubernetes", "Service Bus"]
+    tech: [".NET Core",  "Microservices", "Azure Service Bus", "Azure SQL", "Azure Key Vault", "Azure Application Insights", "Docker", "Kubernetes"]
   },
   {
     id: 2,
@@ -540,7 +538,7 @@ export const caseStudies = [
       "Platform now handles 10x more concurrent operations"
     ],
     improvements: "Would implement event sourcing for better audit trails and add ML-based pricing suggestions.",
-    tech: [".NET Core", "React.js", "Azure", "SQL Server", "Redis"]
+    tech: [".NET Core", "React.js", "Azure", "SQL Server"]
   },
   {
     id: 3,
