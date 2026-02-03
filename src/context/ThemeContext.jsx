@@ -17,6 +17,8 @@ export const ThemeProvider = ({ children }) => {
     return false;
   });
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
@@ -37,12 +39,14 @@ export const ThemeProvider = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ 
-      theme, 
-      toggleTheme, 
-      reducedMotion, 
+    <ThemeContext.Provider value={{
+      theme,
+      toggleTheme,
+      reducedMotion,
       toggleReducedMotion,
-      isDark: theme === 'dark'
+      isDark: theme === 'dark',
+      isMobileMenuOpen,
+      setIsMobileMenuOpen
     }}>
       {children}
     </ThemeContext.Provider>

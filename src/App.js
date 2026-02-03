@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { ThemeProvider } from "./context/ThemeContext";
+import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -12,23 +12,31 @@ import Experience from "./components/Experience";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
+function AppContent() {
+  const { isMobileMenuOpen } = useTheme();
+
+  return (
+    <div className="App min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors">
+      <Header />
+      <main className={`transition-all duration-300 ${isMobileMenuOpen ? 'pt-64 md:pt-0' : ''}`}>
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <CaseStudies />
+        <Testimonials />
+        <Experience />
+        <Contact />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
 function App() {
   return (
     <ThemeProvider>
-      <div className="App min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors">
-        <Header />
-        <main>
-          <Hero />
-          <About />
-          <Skills />
-          <Projects />
-          <CaseStudies />
-          <Testimonials />
-          <Experience />
-          <Contact />
-        </main>
-        <Footer />
-      </div>
+      <AppContent />
     </ThemeProvider>
   );
 }

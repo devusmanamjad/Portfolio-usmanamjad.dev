@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
-import { Sun, Moon, Menu, X, Zap } from 'lucide-react';
-import  WhiteLogo  from '../imgs/others/White.png';
-import  BlackLogo  from '../imgs/others/Black.png';
+import { Sun, Moon } from 'lucide-react';
+import WhiteLogo from '../imgs/others/White.png';
+import BlackLogo from '../imgs/others/Black.png';
+import MenuToggle3D from './MenuToggle3D';
 
 
 
 const Header = () => {
-  const { theme, toggleTheme, reducedMotion, toggleReducedMotion } = useTheme();
+  const { theme, toggleTheme, reducedMotion, toggleReducedMotion, isMobileMenuOpen, setIsMobileMenuOpen } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,11 +30,14 @@ const Header = () => {
   ];
 
   const scrollToSection = (href) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
-    }
     setIsMobileMenuOpen(false);
+    // Delay scroll to let the layout settle after menu closes
+    setTimeout(() => {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
+      }
+    }, 350);
   };
 
   return (
@@ -144,15 +147,8 @@ const Header = () => {
               </AnimatePresence>
             </motion.button>
 
-            {/* Mobile Menu Toggle */}
-            <motion.button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-              whileHover={{ scale: reducedMotion ? 1 : 1.1 }}
-              whileTap={{ scale: reducedMotion ? 1 : 0.9 }}
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </motion.button>
+            {/* Mobile Menu Toggle - 3D Brackets */}
+            <MenuToggle3D onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
           </div>
         </div>
 
@@ -164,9 +160,9 @@ const Header = () => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: reducedMotion ? 0 : 0.3 }}
-              className="md:hidden overflow-hidden"
+              className="md:hidden overflow-hidden bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg rounded-lg mt-2 shadow-lg border border-slate-200 dark:border-slate-700"
             >
-              <div className="py-4 space-y-1">
+              <div className="py-2 space-y-1 px-2">
                 {navItems.map((item, index) => (
                   <motion.button
                     key={item.name}
