@@ -3,16 +3,33 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#000000" />
-        <meta name="description" content=".Net | Azure | ReactJs" />
+        <meta name="theme-color" content="#faf8f4" />
+        <meta
+            name="description"
+            content="Usman Amjad — Senior Software Engineer building event-driven .NET microservices on Azure for enterprise fintech and tax platforms. Microsoft Certified."
+        />
+        <meta property="og:title" content="Usman Amjad — Senior Software Engineer" />
+        <meta
+            property="og:description"
+            content="Event-driven .NET microservices on Azure for enterprise fintech and tax platforms. .NET 8/10, Azure, Kubernetes, React."
+        />
+        <meta property="og:type" content="website" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet" />
-        <link rel="icon" type="image/x-icon" href="%PUBLIC_URL%/favicon.ico" />
-        <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.ico" />
+        <link rel="icon" href="%PUBLIC_URL%/favicon.ico" sizes="48x48" />
+        <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/logo.svg" />
+        <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png" />
 
-
-        <title>Usman A. | SSE</title>
+        <title>Usman Amjad — Senior Software Engineer | .NET · Azure · Microservices</title>
+        <script>
+            // Apply the saved theme before first paint to avoid a light/dark flash.
+            try {
+                var savedTheme = localStorage.getItem('ua-theme-2');
+                if (savedTheme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (e) {}
+        </script>
         <script>
             // Only load visual edit scripts when inside an iframe
             if (window.self !== window.top) {

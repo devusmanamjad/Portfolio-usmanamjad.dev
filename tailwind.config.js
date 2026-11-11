@@ -7,12 +7,29 @@ module.exports = {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+  			serif: ['"Instrument Serif"', 'ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'serif'],
+  			mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace']
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+  			/* Editorial palette — defined as RGB channels in index.css so opacity modifiers work */
+  			paper: {
+  				DEFAULT: 'rgb(var(--paper) / <alpha-value>)',
+  				2: 'rgb(var(--paper-2) / <alpha-value>)'
+  			},
+  			ink: {
+  				DEFAULT: 'rgb(var(--ink) / <alpha-value>)',
+  				2: 'rgb(var(--ink-2) / <alpha-value>)',
+  				3: 'rgb(var(--ink-3) / <alpha-value>)'
+  			},
+  			line: 'rgb(var(--line) / <alpha-value>)',
+  			brand: 'rgb(var(--brand) / <alpha-value>)',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

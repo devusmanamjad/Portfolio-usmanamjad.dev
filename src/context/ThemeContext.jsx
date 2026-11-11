@@ -2,10 +2,14 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext();
 
+const THEME_KEY = 'ua-theme-2';
+
 export const ThemeProvider = ({ children }) => {
+  // Light is the default. The key is versioned so themes stored automatically by
+  // earlier builds don't override it.
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') || 'light';
+      return localStorage.getItem(THEME_KEY) || 'light';
     }
     return 'light';
   });
@@ -23,7 +27,7 @@ export const ThemeProvider = ({ children }) => {
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
-    localStorage.setItem('theme', theme);
+    localStorage.setItem(THEME_KEY, theme);
   }, [theme]);
 
   useEffect(() => {

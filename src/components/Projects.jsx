@@ -1,124 +1,19 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useTheme } from '../context/ThemeContext';
+import { motion } from 'framer-motion';
 import { projects, categories } from '../data/mock';
 import ProjectDetailModal from './ProjectDetailModal';
-import { ExternalLink, Layers, Users, TrendingUp, Eye } from 'lucide-react';
-
-const ProjectCard = ({ project, index, reducedMotion, onViewDetails }) => (
-  <motion.div
-    layout
-    initial={{ opacity: 0, y: 30 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, scale: 0.9 }}
-    transition={{ duration: reducedMotion ? 0 : 0.4, delay: reducedMotion ? 0 : index * 0.05 }}
-    whileHover={{ y: reducedMotion ? 0 : -5 }}
-    className="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg shadow-slate-200/50 dark:shadow-slate-900/50 hover:shadow-xl transition-shadow"
-  >
-    {/* Header */}
-    <div className="p-6 pb-4">
-      <div className="flex items-start justify-between mb-4">
-        <span className={`px-3 py-1 text-xs font-medium rounded-full ${
-          project.category === 'Enterprise' ? 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400' :
-          project.category === 'SaaS' ? 'bg-cyan-100 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-400' :
-          'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400'
-        }`}>
-          {project.category}
-        </span>
-        <motion.button
-          onClick={() => onViewDetails(project)}
-          whileHover={{ scale: reducedMotion ? 1 : 1.1 }}
-          whileTap={{ scale: reducedMotion ? 1 : 0.9 }}
-          className="p-2 rounded-lg text-slate-400 hover:text-cyan-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
-          title="View Details"
-        >
-          <Eye size={18} />
-        </motion.button>
-      </div>
-
-      <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-500 transition-colors">
-        {project.name}
-      </h3>
-      <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">
-        {project.description}
-      </p>
-
-      {/* Meta Info */}
-      <div className="flex flex-wrap gap-4 text-sm text-slate-500 dark:text-slate-400 mb-4">
-        <div className="flex items-center gap-1">
-          <Layers size={14} />
-          <span>{project.role}</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <Users size={14} />
-          <span>{project.industry}</span>
-        </div>
-      </div>
-
-      {/* Metrics if available */}
-      {project.metrics && (
-        <div className="flex items-center gap-2 px-3 py-2 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg text-sm text-cyan-600 dark:text-cyan-400 mb-4">
-          <TrendingUp size={16} />
-          <span className="font-medium">{project.metrics}</span>
-        </div>
-      )}
-    </div>
-
-    {/* Features */}
-    <div className="px-6 pb-4">
-      <div className="flex flex-wrap gap-2 mb-4">
-        {project.features.slice(0, 3).map((feature) => (
-          <span
-            key={feature}
-            className="px-2 py-1 text-xs bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-md"
-          >
-            {feature}
-          </span>
-        ))}
-      </div>
-    </div>
-
-    {/* Tech Stack & View Details Button */}
-    <div className="px-6 py-4 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-700">
-      <div className="flex flex-wrap gap-2 mb-4">
-        {project.tech.slice(0, 4).map((tech) => (
-          <span
-            key={tech}
-            className="px-3 py-1 text-xs font-medium bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-full border border-slate-200 dark:border-slate-700"
-          >
-            {tech}
-          </span>
-        ))}
-        {project.tech.length > 4 && (
-          <span className="px-3 py-1 text-xs font-medium bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-full border border-slate-200 dark:border-slate-700">
-            +{project.tech.length - 4} more
-          </span>
-        )}
-      </div>
-      
-      {/* View Details Button */}
-      <motion.button
-        onClick={() => onViewDetails(project)}
-        whileHover={{ scale: reducedMotion ? 1 : 1.02 }}
-        whileTap={{ scale: reducedMotion ? 1 : 0.98 }}
-        className="w-full py-2.5 bg-cyan-500 hover:bg-cyan-600 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
-      >
-        <Eye size={16} />
-        <span>View Project Details</span>
-      </motion.button>
-    </div>
-  </motion.div>
-);
+import Section, { useReveal } from './Section';
+import { ArrowUpRight } from 'lucide-react';
 
 const Projects = () => {
-  const { reducedMotion } = useTheme();
+  const reveal = useReveal();
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const filteredProjects = activeCategory === 'All'
     ? projects
-    : projects.filter(p => p.category === activeCategory);
+    : projects.filter((p) => p.category === activeCategory);
 
   const handleViewDetails = (project) => {
     setSelectedProject(project);
@@ -131,73 +26,80 @@ const Projects = () => {
   };
 
   return (
-    <section id="projects" className="py-20 lg:py-32 bg-slate-50 dark:bg-slate-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: reducedMotion ? 0 : 0.6 }}
-          className="text-center mb-12"
-        >
-          <span className="text-cyan-500 font-medium mb-4 block">Project Experience</span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-            Projects I've Worked On
-          </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            A collection of impactful projects across fintech, SaaS, and enterprise domains. Click on any project to see detailed information.
-          </p>
-        </motion.div>
-
-        {/* Filter Tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: reducedMotion ? 0 : 0.5 }}
-          className="flex flex-wrap justify-center gap-2 mb-12"
-        >
-          {categories.map((category) => (
-            <motion.button
+    <Section
+      id="projects"
+      index="03"
+      label="Selected work"
+      title="Platforms I've helped build and run."
+      lead="Enterprise, SaaS and fintech systems across tax, payments, banking and analytics. Select a project for the product, my role and the results."
+    >
+      {/* Filters */}
+      <motion.div
+        {...reveal()}
+        role="group"
+        aria-label="Filter projects by category"
+        className="mb-2 flex flex-wrap items-center gap-x-7 gap-y-2"
+      >
+        {categories.map((category) => {
+          const isActive = activeCategory === category;
+          return (
+            <button
               key={category}
+              type="button"
               onClick={() => setActiveCategory(category)}
-              whileHover={{ scale: reducedMotion ? 1 : 1.05 }}
-              whileTap={{ scale: reducedMotion ? 1 : 0.95 }}
-              className={`px-6 py-2 rounded-full font-medium transition-all ${
-                activeCategory === category
-                  ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/25'
-                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-cyan-500 dark:hover:text-cyan-400'
+              aria-pressed={isActive}
+              className={`border-b pb-1.5 text-sm transition-colors ${
+                isActive ? 'border-ink text-ink' : 'border-transparent text-ink-3 hover:text-ink'
               }`}
             >
               {category}
-            </motion.button>
-          ))}
-        </motion.div>
+            </button>
+          );
+        })}
+        <span className="label ml-auto">
+          {String(filteredProjects.length).padStart(2, '0')} {filteredProjects.length === 1 ? 'project' : 'projects'}
+        </span>
+      </motion.div>
 
-        {/* Projects Grid */}
-        <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, index) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                index={index}
-                reducedMotion={reducedMotion}
-                onViewDetails={handleViewDetails}
+      {/* List */}
+      <ol className="mt-5 border-t border-line">
+        {filteredProjects.map((project, index) => (
+          <motion.li key={project.id} {...reveal(index * 0.04)} className="border-b border-line">
+            <button
+              type="button"
+              onClick={() => handleViewDetails(project)}
+              aria-label={`View details for ${project.name}`}
+              className="group grid w-full grid-cols-[2.25rem_1fr_1.5rem] items-baseline gap-x-4 py-7 text-left md:grid-cols-[3rem_1fr_13rem_1.5rem] md:gap-x-6"
+            >
+              <span className="label">{String(index + 1).padStart(2, '0')}</span>
+
+              <span className="min-w-0">
+                <span className="display block text-2xl leading-tight transition-colors group-hover:text-brand sm:text-[1.75rem]">
+                  {project.name}
+                </span>
+                <span className="mt-2 block max-w-xl text-[15px] leading-relaxed">{project.description}</span>
+                <span className="mt-3 block text-sm text-ink-3 md:hidden">
+                  {project.category} · {project.industry}
+                </span>
+              </span>
+
+              <span className="hidden text-sm leading-6 text-ink-3 md:block">
+                <span className="block text-ink-2">{project.category}</span>
+                {project.industry}
+              </span>
+
+              <ArrowUpRight
+                size={20}
+                strokeWidth={1.5}
+                className="self-start text-ink-3 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand"
               />
-            ))}
-          </AnimatePresence>
-        </motion.div>
-      </div>
+            </button>
+          </motion.li>
+        ))}
+      </ol>
 
-      {/* Project Detail Modal */}
-      <ProjectDetailModal
-        project={selectedProject}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-      />
-    </section>
+      <ProjectDetailModal project={selectedProject} isOpen={isModalOpen} onClose={handleCloseModal} />
+    </Section>
   );
 };
 
