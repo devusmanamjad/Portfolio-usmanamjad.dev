@@ -1,384 +1,218 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useTheme } from '../context/ThemeContext';
-import { personalInfo } from '../data/mock';
-import { ArrowDown, Github, Linkedin, Mail, Code2, Database, Cloud, Terminal, Twitter, Phone } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
+import { ArrowDown, ArrowUpRight } from 'lucide-react';
+import { personalInfo, stats } from '../data/mock';
+import { gsap, SplitText, useGSAP, motionAllowed } from '../lib/motion';
+import SystemCard from './SystemCard';
+import Magnetic from './motion/Magnetic';
 
-// Upwork icon component
-const UpworkIcon = ({ size = 20 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M18.561 13.158c-1.102 0-2.135-.467-3.074-1.227l.228-1.076.008-.042c.207-1.143.849-3.06 2.839-3.06 1.492 0 2.703 1.212 2.703 2.703-.001 1.489-1.212 2.702-2.704 2.702zm0-8.14c-2.539 0-4.51 1.649-5.31 4.366-1.22-1.834-2.148-4.036-2.687-5.892H7.828v7.112c-.002 1.406-1.141 2.546-2.547 2.546-1.405 0-2.543-1.14-2.545-2.546V3.492H0v7.112c0 2.914 2.37 5.303 5.281 5.303 2.913 0 5.283-2.389 5.283-5.303v-1.19c.529 1.107 1.182 2.229 1.974 3.221l-1.673 7.873h2.797l1.213-5.71c1.063.679 2.285 1.109 3.686 1.109 3 0 5.439-2.452 5.439-5.45 0-3-2.439-5.439-5.439-5.439z"/>
-  </svg>
-);
+const socials = [
+  { label: 'LinkedIn', href: personalInfo.linkedin },
+  { label: 'GitHub', href: personalInfo.github },
+  { label: 'WhatsApp', href: personalInfo.whatsapp },
+  { label: 'Email', href: `mailto:${personalInfo.email}` },
+];
 
-// WhatsApp icon component
-const WhatsAppIcon = ({ size = 20 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M20.52 3.48A11.82 11.82 0 0 0 12.02 0C5.4 0 .02 5.38.02 12c0 2.11.55 4.17 1.6 5.99L0 24l6.17-1.58A11.96 11.96 0 0 0 12.02 24C18.63 24 24 18.62 24 12c0-3.2-1.25-6.2-3.48-8.52zM12.02 22a9.97 9.97 0 0 1-5.08-1.39l-.36-.22-3.66.94.98-3.57-.24-.37A9.92 9.92 0 0 1 2.02 12c0-5.52 4.49-10 10-10 2.67 0 5.18 1.04 7.06 2.93A9.93 9.93 0 0 1 22.02 12c0 5.51-4.49 10-10 10zm5.76-7.45c-.31-.16-1.84-.91-2.12-1.01-.28-.1-.49-.16-.69.16-.2.31-.79 1.01-.97 1.22-.18.2-.36.23-.67.08-.31-.16-1.29-.48-2.46-1.52-.91-.81-1.53-1.82-1.71-2.13-.18-.31-.02-.48.13-.64.14-.14.31-.36.46-.54.16-.18.2-.31.31-.51.1-.2.05-.39-.03-.54-.08-.16-.69-1.66-.95-2.28-.25-.6-.5-.52-.69-.53l-.59-.01c-.2 0-.53.08-.81.39-.28.31-1.06 1.04-1.06 2.53s1.09 2.94 1.24 3.14c.16.2 2.14 3.27 5.19 4.59.73.31 1.3.5 1.74.64.73.23 1.39.2 1.92.12.58-.09 1.84-.75 2.1-1.47.26-.72.26-1.33.18-1.47-.08-.13-.28-.2-.59-.36z" />
-  </svg>
-);
+const Hero = ({ ready }) => {
+  const root = useRef(null);
+  const title = useRef(null);
+  const content = useRef(null);
+  const glow = useRef(null);
 
-// Animated 3D floating icon component
-const FloatingIcon = ({ Icon, delay, x, y, size = 40 }) => {
-  const { reducedMotion } = useTheme();
-  
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: reducedMotion ? 0 : delay, duration: reducedMotion ? 0 : 0.5 }}
-      className="absolute text-cyan-500/30 dark:text-cyan-400/20"
-      style={{ left: `${x}%`, top: `${y}%` }}
-    >
-      <motion.div
-        animate={reducedMotion ? {} : {
-          y: [0, -15, 0],
-          rotateY: [0, 180, 360],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          delay: delay,
-          ease: "easeInOut"
-        }}
-        style={{ transformStyle: 'preserve-3d' }}
-      >
-        <Icon size={size} strokeWidth={1.5} />
-      </motion.div>
-    </motion.div>
+  // Entrance, once the intro curtain lifts.
+  useGSAP(
+    () => {
+      if (!ready || !motionAllowed()) return;
+      const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+
+      SplitText.create(title.current, {
+        type: 'lines',
+        mask: 'lines',
+        autoSplit: true,
+        onSplit(self) {
+          gsap.set(title.current, { visibility: 'visible' });
+          return gsap.from(self.lines, { yPercent: 115, duration: 1.4, stagger: 0.1, ease: 'expo.out', delay: 0.1 });
+        },
+      });
+
+      gsap.set('[data-hero]', { visibility: 'visible' });
+      tl.from('[data-hero="fade"]', { y: 40, opacity: 0, duration: 1.4, stagger: 0.1 }, 0.35)
+        .from('[data-hero="card"]', { y: 80, opacity: 0, scale: 0.94, duration: 1.8 }, 0.4)
+        .from('[data-hero="chip"]', { scale: 0, opacity: 0, duration: 1.2, stagger: 0.12, ease: 'back.out(2)' }, 1)
+        .from('[data-hero="stat"]', { y: 40, opacity: 0, duration: 1.2, stagger: 0.08 }, 0.8);
+
+      // Count the numeric stats up from zero.
+      gsap.utils.toArray('[data-count]').forEach((el) => {
+        const target = Number(el.dataset.count);
+        const suffix = el.dataset.suffix || '';
+        const counter = { v: 0 };
+        tl.to(
+          counter,
+          {
+            v: target,
+            duration: 1.6,
+            ease: 'power3.out',
+            onUpdate: () => {
+              el.textContent = `${Math.round(counter.v)}${suffix}`;
+            },
+          },
+          0.9
+        );
+      });
+
+      // Scrolling away: the content drifts and fades behind the next section.
+      gsap.to(content.current, {
+        y: 120,
+        opacity: 0.25,
+        ease: 'none',
+        scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true },
+      });
+    },
+    { dependencies: [ready], scope: root }
   );
-};
 
-// Animated code block
-const CodeBlock = ({ reducedMotion }) => {
-  const [currentLine, setCurrentLine] = useState(0);
-  const codeLines = [
-    { text: 'const developer = {', indent: 0, color: 'text-cyan-400' },
-    { text: 'name: "Usman Amjad",', indent: 2, color: 'text-emerald-400' },
-    { text: 'role: "Senior Software Engineer",', indent: 2, color: 'text-emerald-400' },
-    { text: 'skills: ["C#", ".NET", "Azure", "React"],', indent: 2, color: 'text-amber-400' },
-    { text: 'passion: "Crafting Scalable Solutions"', indent: 2, color: 'text-purple-400' },
-    { text: '};', indent: 0, color: 'text-cyan-400' },
-  ];
-
+  // Colour fields follow the pointer a little.
   useEffect(() => {
-    if (reducedMotion) {
-      setCurrentLine(codeLines.length);
-      return;
-    }
-    
-    const timer = setInterval(() => {
-      setCurrentLine(prev => (prev < codeLines.length ? prev + 1 : prev));
-    }, 500);
-    
-    return () => clearInterval(timer);
-  }, [reducedMotion, codeLines.length]);
+    if (!motionAllowed() || !window.matchMedia('(pointer: fine)').matches) return undefined;
+    const xTo = gsap.quickTo(glow.current, 'x', { duration: 2, ease: 'power3.out' });
+    const yTo = gsap.quickTo(glow.current, 'y', { duration: 2, ease: 'power3.out' });
+    const onMove = (e) => {
+      xTo((e.clientX / window.innerWidth - 0.5) * 60);
+      yTo((e.clientY / window.innerHeight - 0.5) * 40);
+    };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    return () => window.removeEventListener('pointermove', onMove);
+  }, []);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, rotateY: -30, rotateX: 10 }}
-      animate={{ opacity: 1, rotateY: 0, rotateX: 0 }}
-      transition={{ duration: reducedMotion ? 0 : 0.8, delay: reducedMotion ? 0 : 0.3 }}
-      className="relative bg-slate-900/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-slate-700/50"
-      style={{ 
-        transformStyle: 'preserve-3d',
-        perspective: '1000px'
-      }}
-    >
-      {/* Window controls */}
-      <div className="flex gap-2 mb-4">
-        <div className="w-3 h-3 rounded-full bg-red-500/80" />
-        <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-        <div className="w-3 h-3 rounded-full bg-green-500/80" />
-        <span className="ml-4 text-xs text-slate-500 font-mono">developer.cs</span>
+    <section id="top" ref={root} className="relative overflow-hidden">
+      {/* Background */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <div className="bg-grid absolute inset-0" />
+        <div ref={glow} className="absolute inset-0">
+          <div className="aurora animate-drift-a left-[-10%] top-[-15%] h-[38rem] w-[38rem] bg-[rgb(var(--glow-1)/0.55)]" />
+          <div className="aurora animate-drift-b right-[-12%] top-[5%] h-[34rem] w-[34rem] bg-[rgb(var(--glow-2)/0.5)]" />
+          <div className="aurora animate-drift-c bottom-[-20%] left-[30%] h-[30rem] w-[30rem] bg-[rgb(var(--glow-3)/0.4)]" />
+        </div>
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-paper" />
       </div>
-      
-      {/* Code content */}
-      <div className="font-mono text-sm space-y-1">
-        {codeLines.slice(0, currentLine).map((line, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: reducedMotion ? 0 : 0.3 }}
-            className="flex"
-          >
-            <span className="text-slate-600 w-6 text-right mr-4">{i + 1}</span>
-            <span className={line.color} style={{ paddingLeft: `${line.indent * 12}px` }}>
-              {line.text}
-            </span>
-          </motion.div>
-        ))}
-        {currentLine < codeLines.length && (
-          <div className="flex items-center">
-            <span className="text-slate-600 w-6 text-right mr-4">{currentLine + 1}</span>
-            <span className="w-2 h-5 bg-cyan-400 animate-pulse" />
+
+      <div ref={content} className="container-page relative pb-16 pt-32 sm:pt-36 lg:pb-20 lg:pt-40">
+        <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
+          <div className="lg:col-span-7">
+            <p
+              data-hero="fade"
+              className="glass inline-flex items-center gap-2.5 rounded-full px-4 py-2 text-sm font-medium text-ink"
+            >
+              <span className="pulse-dot h-2 w-2 rounded-full bg-emerald-500" />
+              {personalInfo.title} at {personalInfo.currentCompany}
+            </p>
+
+            <h1
+              ref={title}
+              data-split-hero
+              className="display mt-8 text-[clamp(2.6rem,5.3vw,4.7rem)] leading-[1.04] [html.motion_&]:invisible"
+            >
+              I build <span className="text-gradient">reliable,</span> event-driven systems for enterprise fintech.
+            </h1>
+
+            <p data-hero="fade" className="mt-8 max-w-xl text-lg leading-relaxed sm:text-xl sm:leading-relaxed">
+              {personalInfo.tagline}
+            </p>
+
+            <div data-hero="fade" className="mt-10 flex flex-wrap items-center gap-3">
+              <Magnetic>
+                <a href="#projects" className="btn-brand">
+                  View selected work
+                  <ArrowDown size={16} strokeWidth={2} />
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a href={personalInfo.resumeUrl} target="_blank" rel="noopener noreferrer" className="btn-outline">
+                  Download CV
+                  <ArrowUpRight size={16} strokeWidth={2} />
+                </a>
+              </Magnetic>
+            </div>
+
+            <ul data-hero="fade" className="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium">
+              {socials.map((link) => (
+                <li key={link.label}>
+                  <a
+                    href={link.href}
+                    target={link.href.startsWith('http') ? '_blank' : undefined}
+                    rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    className="group inline-flex items-center gap-1 text-ink-2 transition-colors hover:text-ink"
+                  >
+                    {link.label}
+                    <ArrowUpRight
+                      size={14}
+                      className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
-        )}
-      </div>
-    </motion.div>
-  );
-};
 
-// Geometric shapes with CSS 3D
-const GeometricShapes = ({ reducedMotion }) => {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Cube 1 */}
-      <motion.div
-        className="absolute w-16 h-16"
-        style={{ left: '75%', top: '20%', transformStyle: 'preserve-3d' }}
-        animate={reducedMotion ? {} : { rotateX: [0, 360], rotateY: [0, 360] }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-      >
-        <div className="w-full h-full border-2 border-cyan-500/30 rounded-lg bg-cyan-500/5" 
-             style={{ transform: 'translateZ(8px)' }} />
-      </motion.div>
-      
-      {/* Cube 2 */}
-      <motion.div
-        className="absolute w-12 h-12"
-        style={{ left: '80%', top: '60%', transformStyle: 'preserve-3d' }}
-        animate={reducedMotion ? {} : { rotateX: [360, 0], rotateY: [360, 0] }}
-        transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-      >
-        <div className="w-full h-full border-2 border-cyan-400/20 rounded-md bg-cyan-400/5" />
-      </motion.div>
-
-      {/* Circle */}
-      <motion.div
-        className="absolute w-20 h-20 rounded-full border-2 border-cyan-500/20"
-        style={{ left: '70%', top: '75%' }}
-        animate={reducedMotion ? {} : { scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      {/* Triangle */}
-      <motion.div
-        className="absolute"
-        style={{ left: '85%', top: '35%' }}
-        animate={reducedMotion ? {} : { rotate: [0, 360] }}
-        transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-      >
-        <div className="w-0 h-0 border-l-[20px] border-r-[20px] border-b-[35px] border-l-transparent border-r-transparent border-b-cyan-500/20" />
-      </motion.div>
-    </div>
-  );
-};
-
-// Particles/dots background
-const ParticleBackground = ({ reducedMotion }) => {
-  const particles = Array.from({ length: 30 }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: Math.random() * 4 + 2,
-    delay: Math.random() * 5,
-    duration: Math.random() * 3 + 4
-  }));
-
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {particles.map(particle => (
-        <motion.div
-          key={particle.id}
-          className="absolute rounded-full bg-cyan-500/30 dark:bg-cyan-400/20"
-          style={{
-            left: `${particle.x}%`,
-            top: `${particle.y}%`,
-            width: particle.size,
-            height: particle.size,
-          }}
-          animate={reducedMotion ? {} : {
-            y: [0, -20, 0],
-            opacity: [0.2, 0.5, 0.2],
-          }}
-          transition={{
-            duration: particle.duration,
-            repeat: Infinity,
-            delay: particle.delay,
-            ease: "easeInOut"
-          }}
-        />
-      ))}
-    </div>
-  );
-};
-
-const Hero = () => {
-  const { reducedMotion } = useTheme();
-
-  const scrollToAbout = () => {
-    const element = document.querySelector('#about');
-    if (element) {
-      element.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
-    }
-  };
-
-  return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      {/* Background Elements */}
-      <ParticleBackground reducedMotion={reducedMotion} />
-      <GeometricShapes reducedMotion={reducedMotion} />
-      
-      {/* Floating tech icons */}
-      <FloatingIcon Icon={Code2} delay={0.2} x={65} y={15} size={35} />
-      <FloatingIcon Icon={Database} delay={0.4} x={78} y={45} size={30} />
-      <FloatingIcon Icon={Cloud} delay={0.6} x={72} y={70} size={32} />
-      <FloatingIcon Icon={Terminal} delay={0.8} x={85} y={25} size={28} />
-
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-slate-50/80 via-transparent to-transparent dark:from-slate-950/80 dark:via-transparent dark:to-transparent pointer-events-none" />
-
-      {/* Content */}
-      <div className="relative z-10 min-h-screen flex items-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left - Text content */}
-            <div>
-              {/* <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: reducedMotion ? 0 : 0.6 }}
-              >
-                <span className="inline-block px-4 py-2 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 text-sm font-medium mb-6 border border-cyan-500/20">
-                  ✨ Available for opportunities
-                </span>
-              </motion.div> */}
-
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: reducedMotion ? 0 : 0.6, delay: reducedMotion ? 0 : 0.1 }}
-                className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-4"
-              >
-                Hi, I'm{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-cyan-600">
-                  Usman
-                </span>
-              </motion.h1>
-
-              <motion.h2
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: reducedMotion ? 0 : 0.6, delay: reducedMotion ? 0 : 0.2 }}
-                className="text-xl sm:text-2xl lg:text-3xl font-medium text-slate-600 dark:text-slate-300 mb-6"
-              >
-                {personalInfo.title}
-              </motion.h2>
-
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: reducedMotion ? 0 : 0.6, delay: reducedMotion ? 0 : 0.3 }}
-                className="text-lg text-slate-500 dark:text-slate-400 mb-8 leading-relaxed max-w-lg"
-              >
-                {personalInfo.tagline}
-              </motion.p>
-
-              {/* CTA Buttons */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: reducedMotion ? 0 : 0.6, delay: reducedMotion ? 0 : 0.4 }}
-                className="flex flex-wrap gap-4 mb-8"
-              >
-                <motion.button
-                  onClick={scrollToAbout}
-                  className="px-8 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-medium rounded-xl shadow-lg shadow-cyan-500/25 transition-all hover:shadow-xl hover:shadow-cyan-500/30"
-                  whileHover={{ scale: reducedMotion ? 1 : 1.05 }}
-                  whileTap={{ scale: reducedMotion ? 1 : 0.95 }}
-                >
-                  View My Work
-                </motion.button>
-                <motion.a
-                  href="#contact"
-                  className="px-8 py-3 border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:border-cyan-500 hover:text-cyan-500 font-medium rounded-xl transition-all"
-                  whileHover={{ scale: reducedMotion ? 1 : 1.05 }}
-                  whileTap={{ scale: reducedMotion ? 1 : 0.95 }}
-                >
-                  Get In Touch
-                </motion.a>
-              </motion.div>
-
-              {/* Social Links */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: reducedMotion ? 0 : 0.6, delay: reducedMotion ? 0 : 0.5 }}
-                className="flex items-center gap-3"
-              >
-                <a
-                  href={personalInfo.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-cyan-500 dark:hover:text-cyan-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all hover:scale-110"
-                  title="GitHub"
-                >
-                  <Github size={20} />
-                </a>
-                <a
-                  href={personalInfo.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-cyan-500 dark:hover:text-cyan-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all hover:scale-110"
-                  title="LinkedIn"
-                >
-                  <Linkedin size={20} />
-                </a>
-                {/* <a
-                  href={personalInfo.upwork}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-green-500 dark:hover:text-green-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all hover:scale-110"
-                  title="Upwork"
-                >
-                  <UpworkIcon size={20} />
-                </a> */}
-                <a
-                  href={personalInfo.whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-sky-500 dark:hover:text-sky-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all hover:scale-110"
-                  title="Whatsapp"
-                >
-                  <WhatsAppIcon size={20} />
-                </a>
-                <a
-                  href={`mailto:${personalInfo.email}`}
-                  className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-cyan-500 dark:hover:text-cyan-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all hover:scale-110"
-                  title="Email"
-                >
-                  <Mail size={20} />
-                </a>
-              </motion.div>
+          {/* Illustration */}
+          <div className="relative lg:col-span-5">
+            <div data-hero="card">
+              <SystemCard />
             </div>
-
-            {/* Right - Code Block / 3D Effect */}
-            <div className="hidden lg:block">
-              <CodeBlock reducedMotion={reducedMotion} />
-            </div>
+            <span
+              data-hero="chip"
+              className="glass animate-float absolute -left-4 -top-5 hidden rounded-full px-3.5 py-1.5 text-xs font-semibold text-ink shadow-lg sm:inline-flex"
+            >
+              .NET 8 / 10
+            </span>
+            <span
+              data-hero="chip"
+              className="glass animate-float-slow absolute -bottom-5 -right-3 hidden rounded-full px-3.5 py-1.5 text-xs font-semibold text-ink shadow-lg sm:inline-flex"
+            >
+              Kubernetes · AKS
+            </span>
+            <span
+              data-hero="chip"
+              className="glass animate-float-slow absolute -right-6 top-1/3 hidden rounded-full px-3.5 py-1.5 text-xs font-semibold text-ink shadow-lg xl:inline-flex"
+            >
+              Azure
+            </span>
           </div>
         </div>
-      </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: reducedMotion ? 0 : 1, duration: reducedMotion ? 0 : 0.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
-      >
-        <motion.button
-          onClick={scrollToAbout}
-          className="flex flex-col items-center gap-2 text-slate-400 hover:text-cyan-500 transition-colors"
-          animate={reducedMotion ? {} : { y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
+        {/* Key facts */}
+        <dl className="mt-20 grid grid-cols-2 gap-3 sm:gap-4 lg:mt-24 lg:grid-cols-4">
+          {stats.map((stat) => {
+            const match = /^(\d+)(\D*)$/.exec(stat.value);
+            return (
+              <div key={stat.label} data-hero="stat" className="glass rounded-3xl p-5 sm:p-6">
+                <dt className="sr-only">{stat.label}</dt>
+                <dd>
+                  <span
+                    className="display block text-4xl leading-none sm:text-5xl"
+                    data-count={match ? match[1] : undefined}
+                    data-suffix={match ? match[2] : undefined}
+                  >
+                    {stat.value}
+                  </span>
+                  <span className="mt-3 block text-sm leading-snug text-ink-2">{stat.label}</span>
+                </dd>
+              </div>
+            );
+          })}
+        </dl>
+
+        <a
+          href="#about"
+          data-hero="fade"
+          className="mt-14 hidden items-center gap-3 text-sm font-medium text-ink-3 transition-colors hover:text-ink lg:inline-flex"
         >
-          <span className="text-sm font-medium">Scroll Down</span>
-          <ArrowDown size={20} />
-        </motion.button>
-      </motion.div>
+          <span className="relative flex h-10 w-6 justify-center rounded-full border border-ink/25">
+            <span className="mt-2 h-2 w-1 animate-bounce rounded-full bg-ink/50" />
+          </span>
+          Scroll to explore
+        </a>
+      </div>
     </section>
   );
 };

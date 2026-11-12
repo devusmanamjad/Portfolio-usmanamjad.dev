@@ -1,136 +1,146 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useTheme } from '../context/ThemeContext';
-import { personalInfo } from '../data/mock';
-import { MapPin } from 'lucide-react';
+import React, { useRef } from 'react';
+import { MapPin, ShieldCheck, GitMerge, Rocket } from 'lucide-react';
+import { personalInfo, principles } from '../data/mock';
+import { gsap, useGSAP, motionAllowed } from '../lib/motion';
+import SectionHeading from './SectionHeading';
+
+const statement =
+  "I'm a .NET engineer who cares most about what happens in production: systems that stay reliable under real-world load, tests that gate every merge, and deployments boring enough to forget.";
+const highlighted = new Set(['production:', 'reliable', 'boring']);
+
+const principleIcons = [ShieldCheck, GitMerge, Rocket];
 
 const About = () => {
-  const { reducedMotion } = useTheme();
+  const root = useRef(null);
+  const words = useRef(null);
+  const photo = useRef(null);
 
-  const stats = [
-    { value: '5+', label: 'Years Experience' },
-    { value: '10+', label: 'Projects Delivered' },
-    // { value: '3', label: 'Countries Worked' },
-    { value: '99%', label: 'Client Satisfaction' },
-  ];
+  useGSAP(
+    () => {
+      if (!motionAllowed()) return;
+      // The statement lights up word by word as it scrolls through the viewport.
+      gsap.fromTo(
+        words.current.querySelectorAll('[data-word]'),
+        { opacity: 0.14 },
+        {
+          opacity: 1,
+          stagger: 0.05,
+          ease: 'none',
+          scrollTrigger: { trigger: words.current, start: 'top 80%', end: 'bottom 45%', scrub: 0.6 },
+        }
+      );
+
+      // Portrait: unmasked from the bottom, then a slow parallax inside its frame.
+      gsap.fromTo(
+        photo.current,
+        { clipPath: 'inset(100% 0% 0% 0%)' },
+        {
+          clipPath: 'inset(0% 0% 0% 0%)',
+          duration: 1.6,
+          ease: 'expo.inOut',
+          scrollTrigger: { trigger: photo.current, start: 'top 85%', once: true },
+        }
+      );
+      gsap.fromTo(
+        photo.current.querySelector('img'),
+        { yPercent: -8, scale: 1.18 },
+        {
+          yPercent: 8,
+          scale: 1.18,
+          ease: 'none',
+          scrollTrigger: { trigger: photo.current, start: 'top bottom', end: 'bottom top', scrub: true },
+        }
+      );
+    },
+    { scope: root }
+  );
 
   return (
-    <section id="about" className="py-20 lg:py-32 bg-slate-50 dark:bg-slate-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: reducedMotion ? 0 : 0.6 }}
-          className="text-center mb-16"
-        >
-          <span className="text-cyan-500 font-medium mb-4 block">About Me</span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-            Building Digital Excellence
-          </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            Passionate about crafting scalable solutions that make a real impact
-          </p>
-        </motion.div>
+    <section id="about" ref={root} className="relative py-28 lg:py-40">
+      <div className="container-page">
+        <SectionHeading index="01" eyebrow="About" />
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Photo Card */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: reducedMotion ? 0 : 0.6 }}
-            className="relative"
-          >
-            {/* Decorative elements */}
-            <div className="absolute -top-4 -left-4 w-24 h-24 bg-cyan-500/10 rounded-2xl -z-10" />
-            <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-cyan-500/5 rounded-2xl -z-10" />
-            
-            <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50">
-              {/* Photo */}
-              <div className="relative mb-6">
-                <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-cyan-400 to-cyan-600">
-                  <img
-                    src={personalInfo.photo}
-                    alt={personalInfo.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                {/* Status badge */}
-                <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-full shadow-lg">
-                  Open to Work
-                </div>
-              </div>
+        <h2 ref={words} className="display mt-8 max-w-5xl text-[clamp(1.75rem,3.6vw,3.2rem)] leading-[1.22] tracking-[-0.025em]">
+          {statement.split(' ').map((word, i) => (
+            <React.Fragment key={i}>
+              <span data-word className={highlighted.has(word) ? 'text-gradient' : undefined}>
+                {word}
+              </span>{' '}
+            </React.Fragment>
+          ))}
+        </h2>
 
-              {/* Location Only */}
-              <div className="flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400">
-                <MapPin size={18} className="text-cyan-500" />
-                <span>{personalInfo.location}</span>
-              </div>
+        <div className="mt-20 grid gap-12 lg:mt-28 lg:grid-cols-12 lg:gap-16">
+          {/* Portrait */}
+          <figure className="lg:col-span-5">
+            <div ref={photo} className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-paper-2">
+              <img
+                src={personalInfo.photo}
+                alt={`Portrait of ${personalInfo.name}`}
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+              <figcaption className="glass absolute inset-x-4 bottom-4 flex items-center justify-between gap-3 rounded-2xl px-4 py-3">
+                <span>
+                  <span className="block text-sm font-semibold text-ink">{personalInfo.name}</span>
+                  <span className="flex items-center gap-1.5 text-xs text-ink-2">
+                    <MapPin size={12} />
+                    {personalInfo.location}
+                  </span>
+                </span>
+                <span className="flex items-center gap-2 rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+                  <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  Open to work
+                </span>
+              </figcaption>
             </div>
-          </motion.div>
+          </figure>
 
-          {/* About Content */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: reducedMotion ? 0 : 0.6 }}
-          >
-            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
-              Hi, I'm {personalInfo.name}
-            </h3>
-            
-            <div className="space-y-4 text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
+          {/* Story */}
+          <div className="lg:col-span-7 lg:pt-4">
+            <div className="space-y-6 text-[17px] leading-8">
               {personalInfo.about.split('\n\n').map((paragraph, i) => (
-                <p key={i}>{paragraph}</p>
+                <p key={i} data-reveal className={i === 0 ? 'text-ink' : undefined}>
+                  {paragraph}
+                </p>
               ))}
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: reducedMotion ? 0 : index * 0.1 }}
-                  className="text-center p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm"
-                >
-                  <div className="text-2xl sm:text-3xl font-bold text-cyan-500 mb-1">
-                    {stat.value}
-                  </div>
-                  <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                    {stat.label}
-                  </div>
-                </motion.div>
+            <p data-reveal className="mt-10 flex flex-wrap gap-2">
+              {personalInfo.credentials.split(' · ').map((item) => (
+                <span key={item} className="chip">
+                  {item}
+                </span>
               ))}
-            </div>
+            </p>
+          </div>
+        </div>
 
-            {/* CTA */}
-            <div className="flex flex-wrap gap-4">
-              <motion.a
-                href="#contact"
-                className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-medium rounded-xl shadow-lg shadow-cyan-500/25 transition-colors"
-                whileHover={{ scale: reducedMotion ? 1 : 1.05 }}
-                whileTap={{ scale: reducedMotion ? 1 : 0.95 }}
+        {/* Principles */}
+        <div className="mt-20 grid gap-4 md:grid-cols-3 lg:mt-28 lg:gap-5">
+          {principles.map((principle, i) => {
+            const Icon = principleIcons[i % principleIcons.length];
+            return (
+              <article
+                key={principle.title}
+                data-reveal
+                className="card group relative overflow-hidden p-7 transition-transform duration-500 hover:-translate-y-1.5 sm:p-8"
               >
-                Let's Connect
-              </motion.a>
-              <motion.a
-                href={personalInfo.resumeUrl}
-                target='_blank'
-                rel="noopener noreferrer"
-                className="px-6 py-3 border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:border-cyan-500 hover:text-cyan-500 font-medium rounded-xl transition-colors"
-                whileHover={{ scale: reducedMotion ? 1 : 1.05 }}
-                whileTap={{ scale: reducedMotion ? 1 : 0.95 }}
-              >
-                Download CV
-              </motion.a>
-            </div>
-          </motion.div>
+                <div
+                  aria-hidden="true"
+                  className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-brand/10 blur-2xl transition-transform duration-700 group-hover:scale-150"
+                />
+                <div className="relative flex items-center justify-between">
+                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-brand to-brand-2 text-white shadow-lg shadow-brand/25">
+                    <Icon size={22} strokeWidth={1.75} />
+                  </span>
+                  <span className="label">0{i + 1}</span>
+                </div>
+                <h3 className="display relative mt-8 text-2xl leading-tight">{principle.title}</h3>
+                <p className="relative mt-3 text-[15px] leading-relaxed">{principle.text}</p>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

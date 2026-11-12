@@ -1,186 +1,224 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { Sun, Moon, ArrowUpRight } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import { Sun, Moon } from 'lucide-react';
-import WhiteLogo from '../imgs/others/White.png';
-import BlackLogo from '../imgs/others/Black.png';
-import MenuToggle3D from './MenuToggle3D';
+import { personalInfo } from '../data/mock';
+import { gsap, useGSAP, getLenis, scrollToTarget } from '../lib/motion';
+import Logo from './Logo';
+import Magnetic from './motion/Magnetic';
 
+const navItems = [
+  { name: 'About', href: '#about' },
+  { name: 'Experience', href: '#experience' },
+  { name: 'Work', href: '#projects' },
+  { name: 'Skills', href: '#skills' },
+  { name: 'Testimonials', href: '#testimonials' },
+];
 
+const sectionIds = ['#top', '#about', '#experience', '#projects', '#case-studies', '#skills', '#credentials', '#testimonials', '#contact'];
+// Sections without their own nav item light up the closest one.
+const navFor = { '#case-studies': '#projects', '#credentials': '#skills' };
 
 const Header = () => {
-  const { theme, toggleTheme, reducedMotion, toggleReducedMotion, isMobileMenuOpen, setIsMobileMenuOpen } = useTheme();
-  const [isScrolled, setIsScrolled] = useState(false);
+  const { theme, toggleTheme, isMobileMenuOpen, setIsMobileMenuOpen } = useTheme();
+  const reduce = useReducedMotion();
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState('');
+  const progress = useRef(null);
 
+  // Hide on the way down, return on the way up.
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      if (Math.abs(y - lastY) > 6) {
+        setHidden(y > lastY && y > 240);
+        lastY = y;
+      }
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const navItems = [
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Testimonials', href: '#testimonials' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Contact', href: '#contact' },
-  ];
+  useEffect(() => {
+    const sections = sectionIds.map((id) => document.querySelector(id)).filter(Boolean);
+    if (!sections.length) return undefined;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const id = `#${entry.target.id}`;
+          setActive(navFor[id] || id);
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
 
-  const scrollToSection = (href) => {
+  // Reading-progress hairline across the top of the page.
+  useGSAP(() => {
+    gsap.fromTo(
+      progress.current,
+      { scaleX: 0 },
+      { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } }
+    );
+  });
+
+  useEffect(() => {
+    const lenis = getLenis();
+    if (isMobileMenuOpen) {
+      lenis?.stop();
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      lenis?.start();
+      document.documentElement.style.overflow = '';
+    }
+  }, [isMobileMenuOpen]);
+
+  const goMobile = (e, href) => {
+    e.preventDefault();
     setIsMobileMenuOpen(false);
-    // Delay scroll to let the layout settle after menu closes
-    setTimeout(() => {
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
-      }
-    }, 350);
+    getLenis()?.start();
+    document.documentElement.style.overflow = '';
+    requestAnimationFrame(() => scrollToTarget(href));
   };
 
+  const showBar = !hidden || isMobileMenuOpen;
+
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: reducedMotion ? 0 : 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg shadow-lg'
-          : 'bg-transparent'
-      }`}
-    >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-<motion.a
-  href="#"
-  className="flex items-center gap-2"
-  whileHover={{ scale: reducedMotion ? 1 : 1.05 }}
->
-  {/* Light theme */}
-  <img
-    src={BlackLogo}
-    alt="Usman Amjad Logo"
-    className="block h-8 dark:hidden"
-  />
+    <>
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[2px]">
+        <div ref={progress} className="h-full origin-left scale-x-0 bg-gradient-to-r from-brand to-brand-2" />
+      </div>
 
-  {/* Dark theme */}
-  <img
-    src={WhiteLogo}
-    alt="Usman Amjad Logo"
-    className="hidden h-8 dark:block"
-  />
-</motion.a>
-          {/* <motion.a
-            href="#"
-            className="flex items-center gap-2 text-xl font-bold text-slate-900 dark:text-white"
-            whileHover={{ scale: reducedMotion ? 1 : 1.05 }}
+      <header
+        className={`fixed inset-x-0 top-0 z-[60] transition-transform duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] ${
+          showBar ? 'translate-y-0' : '-translate-y-[120%]'
+        }`}
+      >
+        <nav aria-label="Primary" className="container-page flex h-[84px] items-center justify-between gap-4">
+          <a href="#top" aria-label="Usman Amjad — back to top" className="shrink-0">
+            <Logo size={34} />
+          </a>
+
+          {/* Desktop navigation: a floating pill with a sliding highlight */}
+          <ul
+            className={`hidden items-center gap-1 rounded-full border p-1.5 transition-all duration-500 lg:flex ${
+              scrolled ? 'glass shadow-[0_10px_40px_-20px_rgb(var(--ink)/0.35)]' : 'border-transparent'
+            }`}
           >
-            <span className="text-cyan-500">&lt;</span>
-            <span>usmanamjad.dev</span>
-            <span className="text-cyan-500">/&gt;</span>
-          </motion.a> */}
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-1">
-            {navItems.map((item) => (
-              <motion.button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
-                whileHover={{ scale: reducedMotion ? 1 : 1.05 }}
-                whileTap={{ scale: reducedMotion ? 1 : 0.95 }}
-              >
-                {item.name}
-              </motion.button>
-            ))}
-          </div>
-
-          {/* Controls */}
-          <div className="flex items-center gap-2">
-            {/* Reduced Motion Toggle */}
-            {/* <motion.button
-              onClick={toggleReducedMotion}
-              className={`p-2 rounded-lg transition-colors ${
-                reducedMotion
-                  ? 'bg-cyan-100 dark:bg-cyan-900 text-cyan-600 dark:text-cyan-400'
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
-              whileHover={{ scale: reducedMotion ? 1 : 1.1 }}
-              whileTap={{ scale: reducedMotion ? 1 : 0.9 }}
-              title={reducedMotion ? 'Enable Motion' : 'Reduce Motion'}
-            >
-              <Zap size={20} className={reducedMotion ? 'opacity-50' : ''} />
-            </motion.button> */}
-
-            {/* Theme Toggle */}
-            <motion.button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-              whileHover={{ scale: reducedMotion ? 1 : 1.1 }}
-              whileTap={{ scale: reducedMotion ? 1 : 0.9 }}
-            >
-              <AnimatePresence mode="wait">
-                {theme === 'dark' ? (
-                  <motion.div
-                    key="sun"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: reducedMotion ? 0 : 0.2 }}
-                  >
-                    <Sun size={20} />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="moon"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: reducedMotion ? 0 : 0.2 }}
-                  >
-                    <Moon size={20} />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
-
-            {/* Mobile Menu Toggle - 3D Brackets */}
-            <MenuToggle3D onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
-          </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: reducedMotion ? 0 : 0.3 }}
-              className="md:hidden overflow-hidden bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg rounded-lg mt-2 shadow-lg border border-slate-200 dark:border-slate-700"
-            >
-              <div className="py-2 space-y-1 px-2">
-                {navItems.map((item, index) => (
-                  <motion.button
-                    key={item.name}
-                    onClick={() => scrollToSection(item.href)}
-                    className="block w-full text-left px-4 py-3 text-base font-medium text-slate-600 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: reducedMotion ? 0 : index * 0.05 }}
+            {navItems.map((item) => {
+              const isActive = active === item.href;
+              return (
+                <li key={item.name} className="relative">
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-highlight"
+                      transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                      className="absolute inset-0 rounded-full bg-ink"
+                    />
+                  )}
+                  <a
+                    href={item.href}
+                    aria-current={isActive ? 'true' : undefined}
+                    className={`relative block rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 ${
+                      isActive ? 'text-paper' : 'text-ink-2 hover:text-ink'
+                    }`}
                   >
                     {item.name}
-                  </motion.button>
-                ))}
-              </div>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+              className="glass inline-flex h-11 w-11 items-center justify-center rounded-full text-ink transition-transform duration-500 hover:rotate-[20deg]"
+            >
+              {theme === 'dark' ? <Sun size={18} strokeWidth={1.75} /> : <Moon size={18} strokeWidth={1.75} />}
+            </button>
+
+            <Magnetic className="hidden sm:inline-block">
+              <a href="#contact" className="btn !py-3">
+                Let&apos;s talk
+                <ArrowUpRight size={16} strokeWidth={2} />
+              </a>
+            </Magnetic>
+
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isMobileMenuOpen}
+              className="glass relative inline-flex h-11 w-11 items-center justify-center rounded-full text-ink lg:hidden"
+            >
+              <span
+                className={`absolute h-[1.5px] w-[18px] bg-current transition-transform duration-300 ${
+                  isMobileMenuOpen ? 'rotate-45' : '-translate-y-[4px]'
+                }`}
+              />
+              <span
+                className={`absolute h-[1.5px] w-[18px] bg-current transition-transform duration-300 ${
+                  isMobileMenuOpen ? '-rotate-45' : 'translate-y-[4px]'
+                }`}
+              />
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      {/* Mobile menu: full-screen sheet with large staggered links */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ clipPath: 'inset(0 0 100% 0)' }}
+            animate={{ clipPath: 'inset(0 0 0% 0)' }}
+            exit={{ clipPath: 'inset(0 0 100% 0)' }}
+            transition={{ duration: reduce ? 0 : 0.7, ease: [0.76, 0, 0.24, 1] }}
+            className="fixed inset-0 z-[55] flex flex-col bg-paper px-6 pb-10 pt-28 lg:hidden"
+          >
+            <ul className="flex-1 space-y-1">
+              {[...navItems, { name: 'Contact', href: '#contact' }].map((item, i) => (
+                <li key={item.name} className="overflow-hidden">
+                  <motion.a
+                    href={item.href}
+                    onClick={(e) => goMobile(e, item.href)}
+                    initial={{ y: reduce ? 0 : '110%' }}
+                    animate={{ y: 0 }}
+                    exit={{ y: reduce ? 0 : '110%' }}
+                    transition={{ duration: reduce ? 0 : 0.7, delay: reduce ? 0 : 0.15 + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                    className="display flex items-baseline gap-4 py-2 text-[2.6rem] leading-tight"
+                  >
+                    <span className="label text-brand">0{i + 1}</span>
+                    {item.name}
+                  </motion.a>
+                </li>
+              ))}
+            </ul>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { delay: reduce ? 0 : 0.5 } }}
+              exit={{ opacity: 0 }}
+              className="border-t border-line pt-6"
+            >
+              <a href={`mailto:${personalInfo.email}`} className="text-lg font-semibold text-ink">
+                {personalInfo.email}
+              </a>
+              <p className="mt-1 text-sm text-ink-3">{personalInfo.location}</p>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-    </motion.header>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

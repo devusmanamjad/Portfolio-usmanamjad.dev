@@ -1,163 +1,137 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useTheme } from '../context/ThemeContext';
+import React, { useRef } from 'react';
+import { Check, MapPin } from 'lucide-react';
 import { experiences } from '../data/mock';
-import { Briefcase, MapPin, Calendar, ChevronRight } from 'lucide-react';
+import { gsap, ScrollTrigger, useGSAP, motionAllowed } from '../lib/motion';
+import SectionHeading from './SectionHeading';
 
-const ExperienceCard = ({ experience, index, reducedMotion }) => {
-  const isLeft = index % 2 === 0;
+const ExperienceItem = ({ experience }) => {
+  const isCurrent = experience.type === 'current';
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: reducedMotion ? 0 : 0.5, delay: reducedMotion ? 0 : index * 0.1 }}
-      className={`relative flex items-center gap-8 ${isLeft ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}
-    >
-      {/* Timeline Line & Dot - Desktop */}
-      <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 flex-col items-center">
-        <div className={`w-4 h-4 rounded-full border-4 ${
-          experience.type === 'current'
-            ? 'bg-cyan-500 border-cyan-200 dark:border-cyan-900'
-            : 'bg-slate-400 border-slate-200 dark:border-slate-700'
-        }`} />
-        {index < experiences.length - 1 && (
-          <div className="w-0.5 h-32 bg-slate-200 dark:bg-slate-700" />
-        )}
-      </div>
+    <li data-exp-item className="relative pb-10 pl-12 last:pb-0 sm:pl-16">
+      {/* Timeline node */}
+      <span
+        aria-hidden="true"
+        data-exp-dot
+        className="absolute left-0 top-9 flex h-[23px] w-[23px] items-center justify-center rounded-full border border-line bg-paper transition-all duration-500 [&.is-active]:scale-110 [&.is-active]:border-brand [&.is-active]:shadow-[0_0_0_6px_rgb(var(--brand)/0.12)] [&.is-active>span]:bg-brand [html:not(.motion)_&]:border-brand [html:not(.motion)_&>span]:bg-brand"
+      >
+        <span className="h-[9px] w-[9px] rounded-full bg-ink/20 transition-colors duration-500" />
+      </span>
 
-      {/* Content */}
-      <div className={`flex-1 ${isLeft ? 'lg:text-right lg:pr-16' : 'lg:text-left lg:pl-16'}`}>
-        <motion.div
-          whileHover={{ y: reducedMotion ? 0 : -5 }}
-          className={`bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg shadow-slate-200/50 dark:shadow-slate-900/50 hover:shadow-xl transition-shadow ${
-            experience.type === 'current' ? 'ring-2 ring-cyan-500/20' : ''
-          }`}
-        >
-          {/* Status Badge */}
-          {experience.type === 'current' && (
-            <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 text-xs font-medium mb-4 ${
-              isLeft ? 'lg:float-right lg:ml-4' : ''
-            }`}>
-              <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse" />
-              Current
-            </div>
+      <article data-reveal className="card p-7 sm:p-9">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="chip !bg-paper-2 !text-ink">{experience.period}</span>
+          {isCurrent && (
+            <span className="chip !border-emerald-500/30 !bg-emerald-500/10 !text-emerald-700 dark:!text-emerald-300">
+              <span className="pulse-dot mr-2 h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              Current role
+            </span>
           )}
+          <span className="ml-auto flex items-center gap-1.5 text-sm text-ink-3">
+            <MapPin size={14} />
+            {experience.location}
+          </span>
+        </div>
 
-          {/* Role & Company */}
-          <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">
-            {experience.role}
-          </h3>
-          <div className="flex items-center gap-2 text-cyan-500 font-medium mb-3 flex-wrap">
-            <Briefcase size={16} />
-            <span>{experience.company}</span>
-            {experience.project && (
-              <>
-                <span className="text-slate-400">•</span>
-                <span className="text-slate-600 dark:text-slate-400">{experience.project}</span>
-              </>
-            )}
-          </div>
+        <h3 className="display mt-6 text-[1.75rem] leading-tight sm:text-[2.1rem]">{experience.role}</h3>
+        <p className="mt-2 text-[17px] font-semibold text-ink">
+          {experience.company}
+          {experience.project && <span className="font-medium text-ink-3"> · {experience.project}</span>}
+        </p>
 
-          {/* Meta */}
-          <div className={`flex flex-wrap gap-4 text-sm text-slate-500 dark:text-slate-400 mb-4 ${
-            isLeft ? 'lg:justify-end' : ''
-          }`}>
-            <div className="flex items-center gap-1">
-              <Calendar size={14} />
-              <span>{experience.period}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <MapPin size={14} />
-              <span>{experience.location}</span>
-            </div>
-          </div>
-
-          {/* Description */}
-          <p className="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
-            {experience.description}
-          </p>
-
-          {/* Highlights */}
-          <ul className={`space-y-2 mb-4 ${
-            isLeft ? 'lg:text-left' : ''
-          }`}>
-            {experience.highlights.slice(0, 4).map((highlight, i) => (
+        {experience.roles && (
+          <ol aria-label={`Roles at ${experience.company}`} className="mt-6 flex flex-wrap gap-2">
+            {experience.roles.map((role, i) => (
               <li
-                key={i}
-                className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400"
+                key={role.title}
+                className={`flex items-center gap-3 rounded-2xl border px-4 py-2.5 text-sm ${
+                  i === 0 ? 'border-brand/30 bg-brand/[0.07] text-ink' : 'border-line text-ink-3'
+                }`}
               >
-                <ChevronRight size={14} className="text-cyan-500 mt-1 flex-shrink-0" />
-                <span>{highlight}</span>
+                <span className="font-semibold">{role.title}</span>
+                <span className="text-xs">{role.period}</span>
               </li>
             ))}
-          </ul>
+          </ol>
+        )}
 
-          {/* Tech Stack */}
-          <div className={`flex flex-wrap gap-2 ${
-            isLeft ? 'lg:justify-end' : ''
-          }`}>
-            {experience.tech.map((tech) => (
-              <span
-                key={tech}
-                className="px-3 py-1 text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-full"
-              >
-                {tech}
+        <p className="mt-6 max-w-2xl leading-relaxed">{experience.description}</p>
+
+        <ul className="mt-6 grid gap-x-8 gap-y-3 text-[15px] leading-relaxed md:grid-cols-2">
+          {experience.highlights.map((highlight) => (
+            <li key={highlight} className="flex gap-3">
+              <span className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
+                <Check size={12} strokeWidth={3} />
               </span>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+              <span>{highlight}</span>
+            </li>
+          ))}
+        </ul>
 
-      {/* Spacer for alternating layout */}
-      <div className="hidden lg:block flex-1" />
-    </motion.div>
+        <ul aria-label="Technologies" className="mt-8 flex flex-wrap gap-2 border-t border-line pt-6">
+          {experience.tech.map((tech) => (
+            <li key={tech} className="chip">
+              {tech}
+            </li>
+          ))}
+        </ul>
+      </article>
+    </li>
   );
 };
 
 const Experience = () => {
-  const { reducedMotion } = useTheme();
+  const root = useRef(null);
+  const line = useRef(null);
+
+  useGSAP(
+    () => {
+      if (!motionAllowed()) return;
+      // The timeline fills as you scroll, and each node lights up as it is reached.
+      gsap.fromTo(
+        line.current,
+        { scaleY: 0 },
+        {
+          scaleY: 1,
+          ease: 'none',
+          scrollTrigger: { trigger: '[data-exp-list]', start: 'top 60%', end: 'bottom 60%', scrub: 0.5 },
+        }
+      );
+      gsap.utils.toArray('[data-exp-item]').forEach((item) => {
+        ScrollTrigger.create({
+          trigger: item,
+          start: 'top 60%',
+          toggleClass: { targets: item.querySelector('[data-exp-dot]'), className: 'is-active' },
+        });
+      });
+    },
+    { scope: root }
+  );
 
   return (
-    <section id="experience" className="py-20 lg:py-32 bg-slate-50 dark:bg-slate-900">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: reducedMotion ? 0 : 0.6 }}
-          className="text-center mb-16"
-        >
-          <span className="text-cyan-500 font-medium mb-4 block">Career Journey</span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-            Work Experience
-          </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            My professional journey through fintech, enterprise, and SaaS development
-          </p>
-        </motion.div>
-
-        {/* Mobile Timeline Indicator */}
-        <div className="lg:hidden flex items-center justify-center gap-2 mb-8">
-          <div className="w-2 h-2 rounded-full bg-cyan-500" />
-          <div className="w-16 h-0.5 bg-slate-300 dark:bg-slate-600" />
-          <div className="w-2 h-2 rounded-full bg-slate-400" />
-          <div className="w-16 h-0.5 bg-slate-300 dark:bg-slate-600" />
-          <div className="w-2 h-2 rounded-full bg-slate-400" />
+    <section id="experience" ref={root} className="relative bg-paper-2/60 py-28 lg:py-40">
+      <div className="container-page grid gap-14 lg:grid-cols-12 lg:gap-12">
+        <div className="lg:col-span-4">
+          <div className="lg:sticky lg:top-32">
+            <SectionHeading
+              index="02"
+              eyebrow="Experience"
+              size="md"
+              title="From core banking to distributed systems at enterprise scale."
+              lead="Around five years across banking, fintech, SaaS and enterprise, each role a step deeper into how financial software really runs."
+            />
+          </div>
         </div>
 
-        {/* Experience Timeline */}
-        <div className="space-y-8 lg:space-y-0">
-          {experiences.map((experience, index) => (
-            <ExperienceCard
-              key={experience.id}
-              experience={experience}
-              index={index}
-              reducedMotion={reducedMotion}
-            />
-          ))}
+        <div className="relative lg:col-span-8">
+          <div aria-hidden="true" className="absolute bottom-0 left-[11px] top-9 w-px bg-line">
+            <div ref={line} className="h-full w-full origin-top bg-gradient-to-b from-brand to-brand-2" />
+          </div>
+          <ol data-exp-list className="relative">
+            {experiences.map((experience) => (
+              <ExperienceItem key={experience.id} experience={experience} />
+            ))}
+          </ol>
         </div>
       </div>
     </section>

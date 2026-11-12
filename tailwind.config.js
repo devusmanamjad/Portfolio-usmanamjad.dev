@@ -7,12 +7,33 @@ module.exports = {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+  			serif: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+  			mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace']
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+  			/* Editorial palette — defined as RGB channels in index.css so opacity modifiers work */
+  			paper: {
+  				DEFAULT: 'rgb(var(--paper) / <alpha-value>)',
+  				2: 'rgb(var(--paper-2) / <alpha-value>)'
+  			},
+  			ink: {
+  				DEFAULT: 'rgb(var(--ink) / <alpha-value>)',
+  				2: 'rgb(var(--ink-2) / <alpha-value>)',
+  				3: 'rgb(var(--ink-3) / <alpha-value>)'
+  			},
+  			surface: 'rgb(var(--surface) / <alpha-value>)',
+  			line: 'rgb(var(--line) / <alpha-value>)',
+  			brand: {
+  				DEFAULT: 'rgb(var(--brand) / <alpha-value>)',
+  				2: 'rgb(var(--brand-2) / <alpha-value>)'
+  			},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -45,14 +66,7 @@ module.exports = {
   			},
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
-  			chart: {
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
-  			}
+  			ring: 'hsl(var(--ring))'
   		},
   		keyframes: {
   			'accordion-down': {

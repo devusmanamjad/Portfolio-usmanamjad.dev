@@ -11,9 +11,14 @@ import usmanamjad from "../imgs/others/usmanamjadmain.jpeg";
 
 
 export const personalInfo = {
-  name: "M Usman Amjad",
+  name: "Usman Amjad",
   title: "Senior Software Engineer",
-  tagline: "Building Scalable Solutions with .NET, React & Azure",
+  // Accurate current position (used for the availability badge / hero)
+  currentRole: "Senior Software Engineer",
+  currentCompany: "Ciklum",
+  tagline:
+    "Senior Software Engineer at Ciklum with around five years across banking, fintech and SaaS. I design .NET microservices on Azure — Service Bus, Kubernetes, SQL — and ship the React front-ends that sit on top of them.",
+  credentials: "Microsoft Certified · .NET 8/10 · Azure · Microservices · React",
   email: "usmanamjad.dev@gmail.com",
   phone: "+92 342-8724610",
   location: "Lahore, Pakistan",
@@ -23,11 +28,84 @@ export const personalInfo = {
   twitter: "",
   whatsapp: "https://wa.me/923428724610?text=Hi,%20I’m%20Usman,%20a%20passionate%20Full%20Stack%20Developer.%20For%20quick%20discussions%20and%20inquiries,%20you%20can%20connect%20with%20me%20on%20WhatsApp%20directly:",
   photo: usmanamjad,
-  about: `Results-driven Software Engineer with over around 5 years of experience specializing in .NET Core, React.js, and Azure Cloud. I've built scalable applications for fintech, SaaS, and enterprise solutions that serve thousands of users daily.
+  about: `I'm a .NET engineer focused on event-driven, low-latency microservices on Azure for enterprise fintech and tax platforms. Right now I'm a Senior Software Engineer at Ciklum, building a large-scale US tax platform for a global professional-services client — services that communicate over Azure Service Bus, run in Docker on Kubernetes (AKS), and are watched through Application Insights with KQL dashboards and distributed tracing.
 
-My expertise spans from developing efficient UIs and integrating complex APIs to delivering high-performance cloud solutions. I'm passionate about improving system architecture and maintaining software quality standards that meet diverse client needs across global teams.`,
+My career has followed the full arc of financial software: I started on core banking products — Islamic and conventional loan management, credit-scoring integrations, and financial reporting — for major banks, moved into full-stack SaaS delivery for international clients, and now design and operate distributed systems at enterprise scale.
+
+What I care about most is reliability under real-world conditions: idempotent consumers, retry and poison-queue strategies, strong test coverage gating every merge, and CI/CD pipelines that make deployments boring. On the front end, I ship clean, responsive UIs in React and TypeScript that integrate seamlessly with the APIs I build.`,
   resumeUrl: "https://drive.google.com/file/d/1SQysf0RrEqzeeYOcizUcMzBsWnSml6H7/view?usp=sharing"
 };
+
+// Headline metrics shown in the hero / about strip
+export const stats = [
+  { value: "5+", label: "Years building financial software" },
+  { value: "3", label: "Regions served — US, Europe, Middle East" },
+  { value: "5+", label: "Time zones collaborated across daily" },
+  { value: "AI-200", label: "Microsoft Certified — Azure AI" },
+];
+
+// Core stack, shown as a scrolling strip under the hero
+export const coreStack = [
+  "C#", ".NET 8/10", "ASP.NET Core", "Azure Service Bus", "Azure Functions",
+  "Kubernetes (AKS)", "Docker", "Entity Framework Core", "SQL Server", "React.js",
+  "TypeScript", "Application Insights", "GitHub Actions", "Azure DevOps", "xUnit / NUnit",
+];
+
+// Engineering principles, shown in the About section
+export const principles = [
+  {
+    title: "Reliability by design",
+    text: "Idempotent consumers, retry policies and poison-queue strategies, so failures are expected, contained and recoverable.",
+  },
+  {
+    title: "Quality gates on every merge",
+    text: "Unit and integration tests with coverage gates in CI — code doesn't ship unless it proves itself first.",
+  },
+  {
+    title: "Boring deployments",
+    text: "Multi-stage CI/CD pipelines with approvals and full observability, so releasing is routine rather than an event.",
+  },
+];
+
+// Professional certifications & credentials (from LinkedIn)
+export const certifications = [
+  {
+    id: 1,
+    name: "Azure AI Cloud Developer Associate",
+    code: "AI-200",
+    issuer: "Microsoft Certified",
+    description:
+      "Associate-level certification for designing and building AI solutions on Azure.",
+    featured: true,
+  },
+  {
+    id: 2,
+    name: "Microservices Architecture with .NET Core",
+    code: ".NET 8",
+    issuer: "Professional Course",
+    description:
+      "Microservices with .NET 8, EF Core, .NET Identity, and Azure Service Bus.",
+    featured: true,
+  },
+  {
+    id: 3,
+    name: "React.js Essential Training",
+    code: "Frontend",
+    issuer: "LinkedIn Learning",
+    description:
+      "Modern React fundamentals — components, hooks, and state management.",
+    featured: false,
+  },
+  {
+    id: 4,
+    name: "SQL Essential Training",
+    code: "Data",
+    issuer: "LinkedIn Learning",
+    description:
+      "Relational data modeling, querying, and performance fundamentals.",
+    featured: false,
+  },
+];
 
 // Professional Testimonials (from colleagues, managers, team leads)
 export const professionalTestimonials = [
@@ -43,7 +121,7 @@ export const professionalTestimonials = [
   {
     id: 2,
     name: "Faisal Hameed",
-    role: "Pricipal Software Engineer",
+    role: "Principal Software Engineer",
     company: "Tkxel",
     image: faisalHameed_Testimonials,
     text: "I had the pleasure of working closely with Usman Amjad, and I can confidently say he is one of the most talented and dedicated full stack software developers I have encountered. Usman consistently demonstrates a deep understanding of both front-end and back-end development, showcasing his ability to seamlessly integrate complex features and optimize performance across the stack. His problem-solving skills are top-notch, and he always approaches challenges with a calm, logical mindset. Whether it’s debugging a complex issue or coming up with innovative solutions, Usman is quick to dive deep into the problem and provide a clear, efficient path forward. Moreover, Usman is a great team player. He communicates effectively, is always open to feedback, and is quick to assist his colleagues when needed. His positive attitude and dedication to continuous improvement make him a valuable asset to any team. I highly recommend Usman for any role that requires a skilled and versatile full stack developer.",
@@ -69,7 +147,7 @@ export const clientTestimonials = [
     company: "Range Marketing",
     location: "United States",
     image: tyler_testimonials,
-    text: " If you're reading this, obviously you're probably interested in working with Usman here. Just wanna let you know, fantastic to work with. His response rate is incredible. He'll hop on video calls, elaborate everything, bring everything out to detail. In his proposals, he brings everything to detail. Very fair and honest guy. I would recommend Usman to anyone looking for his IT services. He's been great to work with. And we had a lot of fun too. It felt more of a partnership than just a business transaction. So again, really appreciate everything you've done for me, Usman, and I look forward to referring and working with Usman as well in the future here.",
+    text: "If you're reading this, obviously you're probably interested in working with Usman here. Just wanna let you know, fantastic to work with. His response rate is incredible. He'll hop on video calls, elaborate everything, bring everything out to detail. In his proposals, he brings everything to detail. Very fair and honest guy. I would recommend Usman to anyone looking for his IT services. He's been great to work with. And we had a lot of fun too. It felt more of a partnership than just a business transaction. So again, really appreciate everything you've done for me, Usman, and I look forward to referring and working with Usman as well in the future here.",
     rating: 5,
     platform: "Upwork"
   },
@@ -86,7 +164,7 @@ export const clientTestimonials = [
   },
   {
     id: 3,
-    name: "Arthur J. ",
+    name: "Arthur J.",
     role: "Chief Executive Officer",
     company: "Emformance",
     location: "United States",
@@ -106,9 +184,10 @@ export const skills = {
     { name: "HTML/CSS", level: 85 }
   ],
   frameworks: [
-    { name: ".NET", level: 95 },
+    { name: ".NET 6/8/10", level: 95 },
     { name: "ASP.NET Core", level: 95 },
     { name: "React.js", level: 90 },
+    { name: "Angular", level: 80 },
     { name: "Entity Framework Core", level: 90 },
     { name: "Tailwind CSS", level: 85 }
   ],
@@ -116,7 +195,7 @@ export const skills = {
     { name: "Azure Service Bus", level: 90 },
     { name: "Azure Functions", level: 85 },
     { name: "Azure Key Vault", level: 85 },
-    { name: "Azure Application Insights", level: 85 },
+    { name: "Application Insights", level: 85 },
     { name: "Azure SQL", level: 90 },
     { name: "Docker", level: 85 },
     { name: "Kubernetes (AKS)", level: 80 }
@@ -127,29 +206,40 @@ export const skills = {
     { name: "MongoDB", level: 80 },
     { name: "DynamoDB", level: 75 }
   ],
+  testing: [
+    { name: "xUnit", level: 90 },
+    { name: "NUnit", level: 90 },
+    { name: "Moq", level: 85 }
+  ],
   tools: [
-    "Git", "Azure DevOps", "Jira", "VS Code", "Docker", "Kubernetes"
+    "Azure DevOps", "GitHub Actions", "CI/CD", "Git", "Power BI", "Hangfire", "Jira", "KQL"
   ]
 };
 
 export const experiences = [
   {
     id: 1,
-    role: "Mid-Level Software Engineer",
+    role: "Senior Software Engineer",
     company: "Ciklum",
-    project: "Deloitte US",
+    project: "Enterprise US tax platform",
     location: "Lahore, Pakistan (Remote)",
     period: "Feb 2025 – Present",
-    type: "current",
-    description: "Building and integrating microservices for an enterprise tax platform for Deloitte US Tax.",
-    highlights: [
-      "Event-driven architecture on .NET with Azure Service Bus, Azure SQL, Key Vault",
-      "Containerizing services with Docker and orchestrating via Kubernetes",
-      "Designing resilient APIs with retry/poison-queue strategies and observability",
-      "Ownership of unit & integration tests, raising code coverage across services",
-      "Collaborating with multi-national team across time zones"
+    // Promotion history at this company, newest first
+    roles: [
+      { title: "Senior Software Engineer", period: "Nov 2026 – Present" },
+      { title: ".NET Engineer II", period: "Feb 2025 – Nov 2026" },
     ],
-    tech: [".NET", "Microservices", "Azure Service Bus", "Azure SQL", "Azure Key Vault", "Azure Application Insights", "Docker", "Kubernetes", "CI/CD", "Github Actions"]
+    type: "current",
+    description: "Building and integrating event-driven microservices for a large-scale US tax platform serving a global professional-services client, as part of a distributed team across Pakistan, India, Poland, the Netherlands, and Ukraine.",
+    highlights: [
+      "Design event-driven .NET microservices on Azure Service Bus, Azure SQL, Key Vault & App Insights",
+      "Containerize services with Docker and orchestrate on Kubernetes (AKS)",
+      "Engineer resilient APIs with idempotent consumers, retry and poison-queue strategies",
+      "Own unit & integration testing (NUnit/xUnit, Moq) and enforce coverage gates in CI",
+      "Build GitHub Actions & Azure DevOps pipelines with multi-stage approval workflows",
+      "Drive design reviews and lead root-cause analysis for production incidents"
+    ],
+    tech: [".NET 8/10", "Microservices", "Azure Service Bus", "Azure SQL", "Key Vault", "Application Insights", "Docker", "Kubernetes", "CI/CD", "GitHub Actions"]
   },
   {
     id: 2,
@@ -158,15 +248,15 @@ export const experiences = [
     location: "Lahore, Pakistan",
     period: "Jun 2023 – Feb 2025",
     type: "past",
-    description: "Building complete .NET Core applications and user-friendly React.js interfaces.",
+    description: "Delivered end-to-end .NET Core + React.js applications for international clients across fintech, education, and distribution analytics.",
     highlights: [
-      "Built complete .NET Core applications from start to finish",
-      "Developed user-friendly interfaces using React.js",
-      "Collaborated with international teams across America, India, and Portugal",
-      "Managed multiple projects across various business areas",
-      "Provided consultancy to international clients"
+      "Built full-stack SaaS products from architecture through deployment using Clean Architecture & SOLID",
+      "Integrated Stripe, PayPal, wire/ACH and manual payment flows with multi-currency support",
+      "Automated background jobs with Hangfire and tuned performance on Azure App Service",
+      "Designed React.js UIs and component libraries against secure RESTful APIs",
+      "Provided technical consultancy and handover sessions to client development teams"
     ],
-    tech: [".NET Core", "React.js", "Azure", "SQL Server", "RESTful APIs"]
+    tech: [".NET Core", "React.js", "Azure", "SQL Server", "Stripe", "Hangfire", "RESTful APIs"]
   },
   {
     id: 3,
@@ -175,31 +265,31 @@ export const experiences = [
     location: "Lahore, Pakistan",
     period: "Mar 2021 – Jun 2023",
     type: "past",
-    description: "Working on Fintech products for major banking sectors, specializing in Islamic and Conventional Banking.",
+    description: "Built and supported Fintech products for major banking clients, specializing in Islamic and conventional banking — including a full Loan Management System for a major Islamic bank.",
     highlights: [
-      "Spearheaded Fintech Product Loan Management System (LMS) for Al Baraka Bank",
-      "Led data migration and implemented business processes",
-      "Implemented AutoCredit with Risk Scoring and Core Banking integration",
-      "Gained expertise in Islamic loan management (Ijarah and Mudaraba)",
-      "Rapid conflict resolution on live production tasks"
+      "Delivered a Loan Management System for a major Islamic bank (Ijarah, Mudaraba & conventional lending)",
+      "Implemented AutoCredit with risk scoring and core-banking integration",
+      "Led data migration from legacy systems and built ETL pipelines",
+      "Created custom financial reporting with Sybase PowerBuilder",
+      "Managed complex SQL Server & MongoDB data structures and resolved live production issues"
     ],
-    tech: [".NET Core MVC", "SQL Server", "Microservices", "PowerBuilder"]
+    tech: [".NET / ASP.NET MVC", "SQL Server", "MongoDB", "PowerBuilder", "ETL"]
   }
 ];
 
 export const projects = [
   {
     id: 1,
-    name: "Deloitte US Tax Platform",
+    name: "Enterprise Tax Platform",
     category: "Enterprise",
-    description: "Enterprise tax platform with microservices architecture for Deloitte US.",
-    role: "Software Engineer",
+    description: "Large-scale US tax platform built on event-driven .NET microservices on Azure.",
+    role: "Senior Software Engineer",
     tech: [".NET Core",  "Microservices", "Azure Service Bus", "Azure SQL", "Azure Key Vault", "Azure Application Insights", "Docker", "Kubernetes"],
     features: ["Event-driven architecture", "Distributed tracing", "CI/CD pipelines"],
     industry: "Tax & Finance Consultancy",
     team: "Multi-national",
     // Extended Details
-    fullDescription: "A comprehensive enterprise tax platform serving thousands of tax professionals across the United States. The platform handles complex tax calculations, document management, and compliance workflows for one of the world's largest professional services firms.",
+    fullDescription: "A large-scale US enterprise tax platform handling millions of returns per season for thousands of enterprise clients. The platform covers complex tax calculations, document management, and compliance workflows for a global professional-services firm.",
     duration: "Feb 2025 - Present",
     teamSize: "20+ engineers across US, Europe, and Asia",
     responsibilities: [
@@ -211,7 +301,7 @@ export const projects = [
       "Collaborated with architects on system design decisions and technical documentation"
     ],
     challenges: [
-      "Ensuring maximum uptime and deal with the Dev and QA related bugs.",
+      "Maintaining high uptime while resolving defects across Dev and QA environments",
       "Managing complex data consistency across distributed microservices",
       "Meeting strict compliance requirements for sensitive tax data",
       "Coordinating deployments across multiple time zones with zero downtime"
@@ -258,17 +348,17 @@ export const projects = [
   },
   {
     id: 3,
-    name: "ProfitOptics - Margin Optimization",
+    name: "Margin Optimization & Pricing Analytics",
     category: "Enterprise",
     description: "Enterprise platform for advanced analytics, pricing intelligence, and process automation.",
     role: "Senior Developer",
     tech: [".NET Core", "React.js", "Azure", "EF Core", "Reporting"],
     features: ["Real-time dashboards", "Margin analytics", "Process automation"],
-    industry: "Enterprise",
+    industry: "Distribution Analytics",
     team: "US, India, Portugal, Pakistan",
     // Extended Details
     fullDescription: "An enterprise-grade analytics platform that provides real-time insights into profit margins, pricing strategies, and operational efficiency. Used by Fortune 500 companies to make data-driven decisions that impact millions in revenue.",
-    metrics: "Maximumized to 39% sales margin",
+    metrics: "Sales margin maximized to 39%",
     duration: "1 year",
     teamSize: "12 engineers across 3 countries",
     responsibilities: [
@@ -294,7 +384,7 @@ export const projects = [
   },
   {
     id: 4,
-    name: "ISEP - Payment Integration",
+    name: "Student-Exchange Payments Platform",
     category: "Fintech",
     description: "Payment and finance module with Stripe, PayPal, and ACH integrations.",
     role: "Backend Developer",
@@ -401,7 +491,7 @@ export const projects = [
   },
   {
     id: 7,
-    name: "XPS Solution - Self-Storage Operations Platform",
+    name: "Self-Storage Operations Platform",
     category: "Enterprise",
     description: "Platform for 24/7 call-centre support and remote facility management.",
     role: "Full-Stack Developer",
@@ -436,7 +526,7 @@ export const projects = [
   },
   {
     id: 8,
-    name: "Al Baraka Bank - LMS",
+    name: "Islamic & Conventional Loan Management System",
     category: "Fintech",
     description: "Loan Management System for Islamic and Conventional Banking products.",
     role: "Software Engineer",
@@ -445,7 +535,7 @@ export const projects = [
     industry: "Banking",
     team: "Enterprise",
     // Extended Details
-    fullDescription: "A comprehensive Loan Management System for Al Baraka Bank supporting both Islamic (Shariah-compliant) and conventional banking products. Handles the complete loan lifecycle from application to disbursement and repayment tracking.",
+    fullDescription: "A comprehensive Loan Management System for a major Islamic bank, supporting both Islamic (Shariah-compliant) and conventional banking products. Handles the complete loan lifecycle from application to disbursement and repayment tracking.",
     duration: "2 years",
     teamSize: "56 engineers",
     responsibilities: [
@@ -475,13 +565,13 @@ export const caseStudies = [
   {
     id: 1,
     title: "Enterprise Tax Platform Modernization",
-    project: "Deloitte US Tax",
-    context: "Deloitte needed to modernize their enterprise tax platform to handle thousands of concurrent users and complex tax calculations across multiple jurisdictions.",
+    project: "Enterprise Tax Platform",
+    context: "A global professional-services firm needed to modernize its enterprise tax platform to handle thousands of concurrent users and complex tax calculations across multiple jurisdictions.",
     problem: "Legacy monolithic architecture was causing scalability issues, slow deployments, and difficulty in maintaining compliance across different tax regions.",
     constraints: [
       "Strict compliance requirements for tax data",
       "Multi-region deployment requirements",
-      "Integration with existing Deloitte systems"
+      "Integration with the client's existing internal systems"
     ],
     approach: "Adopted event-driven microservices architecture with Azure Service Bus for reliable message processing. Implemented containerization with Docker and Kubernetes for scalable deployments.",
     architecture: [
@@ -543,7 +633,7 @@ export const caseStudies = [
   {
     id: 3,
     title: "Real-Time Profit Analytics Engine",
-    project: "ProfitOptics - Margin Optimization",
+    project: "Margin Optimization & Pricing Analytics",
     context: "Enterprise clients needed real-time insights into margin performance and operational efficiency to make data-driven pricing decisions.",
     problem: "Legacy architecture couldn't handle the data volume needed for real-time reporting. Dashboards were slow, and decision-makers lacked actionable insights.",
     constraints: [
@@ -577,7 +667,8 @@ export const caseStudies = [
 ];
 
 export const education = {
-  degree: "Bachelor of Science in Computer Science",
+  degree: "BSc in Computer Science",
+  field: "Computational Science",
   institution: "The Islamia University of Bahawalpur",
   period: "2016 - 2020",
   cgpa: "3.61/4.0"
