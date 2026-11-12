@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#faf8f4" />
+        <meta name="theme-color" content="#f7f5f0" />
         <meta
             name="description"
             content="Usman Amjad — Senior Software Engineer building event-driven .NET microservices on Azure for enterprise fintech and tax platforms. Microsoft Certified."
@@ -28,6 +28,13 @@
                 if (savedTheme === 'dark') {
                     document.documentElement.classList.add('dark');
                 }
+            } catch (e) {}
+            // Animations hide content until it is revealed, so only opt in when
+            // the visitor allows motion.
+            try {
+                var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+                    localStorage.getItem('reducedMotion') === 'true';
+                if (!reduce) document.documentElement.classList.add('motion');
             } catch (e) {}
         </script>
         <script>

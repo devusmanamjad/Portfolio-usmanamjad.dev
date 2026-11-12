@@ -1,35 +1,41 @@
-import React from 'react';
+import React, { useId } from 'react';
 
-// "UA" monogram: two letters drawn as single strokes inside a deep-green tile.
+// "UA" monogram: two single-stroke letters on an ultramarine → violet tile.
 // The same artwork is saved as public/logo.svg for the favicon.
-export const LogoMark = ({ size = 36, className = '' }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 40 40"
-    fill="none"
-    role="img"
-    aria-label="Usman Amjad monogram"
-    className={className}
-  >
-    <rect width="40" height="40" rx="9" fill="#0F5C47" />
-    {/* A crossbar in the lighter accent, drawn first so the legs sit on top */}
-    <path d="M23 22.9h7" stroke="#8FDCC0" strokeWidth="2.5" />
-    <g stroke="#FAF8F4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      {/* U */}
-      <path d="M8.5 12.5v9a5 5 0 0 0 10 0v-9" />
-      {/* A */}
-      <path d="M21.5 27.5l5-15 5 15" />
-    </g>
-  </svg>
-);
+export const LogoMark = ({ size = 36, className = '' }) => {
+  const id = useId().replace(/:/g, '');
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 40 40"
+      fill="none"
+      role="img"
+      aria-label="Usman Amjad monogram"
+      className={className}
+    >
+      <defs>
+        <linearGradient id={`ua-${id}`} x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#3448E6" />
+          <stop offset="1" stopColor="#8454F0" />
+        </linearGradient>
+      </defs>
+      <rect width="40" height="40" rx="11" fill={`url(#ua-${id})`} />
+      <path d="M23 22.9h7" stroke="#C9D0FF" strokeWidth="2.5" />
+      <g stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M8.5 12.5v9a5 5 0 0 0 10 0v-9" />
+        <path d="M21.5 27.5l5-15 5 15" />
+      </g>
+    </svg>
+  );
+};
 
-// Monogram + serif wordmark, used in the header and footer.
+// Monogram + wordmark, used in the header and footer.
 const Logo = ({ size = 36, showWordmark = true, className = '' }) => (
   <span className={`inline-flex items-center gap-3 ${className}`}>
     <LogoMark size={size} />
     {showWordmark && (
-      <span className="font-serif text-[1.45rem] leading-none tracking-[-0.01em] text-ink">Usman Amjad</span>
+      <span className="text-[1.05rem] font-bold leading-none tracking-[-0.02em] text-ink">Usman Amjad</span>
     )}
   </span>
 );
