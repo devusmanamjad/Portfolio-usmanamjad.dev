@@ -1,23 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap, useGSAP, motionAllowed, getLenis } from '../../lib/motion';
 
-const SEEN_KEY = 'ua-intro-seen';
-
-const shouldShow = () => {
-  if (!motionAllowed()) return false;
-  try {
-    return !sessionStorage.getItem(SEEN_KEY);
-  } catch (e) {
-    return true;
-  }
-};
-
 /**
- * A short intro (about 2s) shown once per browser session: a 0–100 counter
- * and the name rising into view, then the curtain lifts to reveal the hero.
+ * A short intro on every page load: the name rises into view while a 0–100
+ * counter runs for a random 0.5–1s, then the curtain lifts to reveal the hero.
  */
 const Preloader = ({ onDone }) => {
-  const [show] = useState(shouldShow);
+  const [show] = useState(motionAllowed);
   const [gone, setGone] = useState(!show);
   const root = useRef(null);
   const count = useRef(null);
@@ -33,26 +22,27 @@ const Preloader = ({ onDone }) => {
       if (!show) return;
       document.documentElement.style.overflow = 'hidden';
       getLenis()?.stop();
+      // Always start at the top, since the intro hands over to the hero.
+      if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
+      window.scrollTo(0, 0);
+
+      const hold = 0.5 + Math.random() * 0.5;
       const counter = { v: 0 };
 
       const finish = () => {
         document.documentElement.style.overflow = '';
         getLenis()?.start();
-        try {
-          sessionStorage.setItem(SEEN_KEY, '1');
-        } catch (e) {
-          /* private mode: the intro simply plays again next time */
-        }
+        doneRef.current();
       };
 
       gsap
         .timeline({ onComplete: () => setGone(true) })
-        .from('[data-pl-word]', { yPercent: 115, duration: 1, ease: 'expo.out', stagger: 0.08 }, 0.1)
+        .from('[data-pl-word]', { yPercent: 115, duration: 0.6, ease: 'expo.out', stagger: 0.06 }, 0)
         .to(
           counter,
           {
             v: 100,
-            duration: 1.4,
+            duration: hold,
             ease: 'power2.inOut',
             onUpdate: () => {
               if (count.current) count.current.textContent = String(Math.round(counter.v)).padStart(3, '0');
@@ -60,13 +50,10 @@ const Preloader = ({ onDone }) => {
           },
           0
         )
-        .to('[data-pl-bar]', { scaleX: 1, duration: 1.4, ease: 'power2.inOut' }, 0)
-        .to('[data-pl-word], [data-pl-meta]', { yPercent: -115, opacity: 0, duration: 0.6, ease: 'expo.in', stagger: 0.04 }, '+=0.15')
-        .add(() => {
-          finish();
-          doneRef.current();
-        }, '-=0.15')
-        .to(root.current, { clipPath: 'inset(0% 0% 100% 0%)', duration: 1.1, ease: 'expo.inOut' }, '<');
+        .to('[data-pl-bar]', { scaleX: 1, duration: hold, ease: 'power2.inOut' }, 0)
+        .to('[data-pl-word], [data-pl-meta]', { yPercent: -115, opacity: 0, duration: 0.4, ease: 'expo.in', stagger: 0.03 })
+        .add(finish, '-=0.1')
+        .to(root.current, { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.8, ease: 'expo.inOut' }, '<');
     },
     { scope: root }
   );
@@ -86,9 +73,10 @@ const Preloader = ({ onDone }) => {
       </div>
 
       <div>
-        <p className="display flex flex-wrap gap-x-[0.28em] overflow-hidden text-[clamp(3rem,11vw,9rem)] leading-[0.95]">
+        <p className="display flex overflow-hidden whitespace-nowrap text-[clamp(1.75rem,8vw,7.5rem)] leading-[0.95]">
           <span data-pl-word className="inline-block">Usman</span>
           <span data-pl-word className="text-gradient inline-block pb-[0.08em]">Amjad</span>
+          <span data-pl-word className="inline-block text-ink-3">.dev</span>
         </p>
         <div className="mt-8 flex items-end justify-between gap-6 overflow-hidden">
           <span data-pl-meta className="label">Senior Software Engineer</span>
