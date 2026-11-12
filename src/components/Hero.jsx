@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { personalInfo, stats } from '../data/mock';
 import { gsap, SplitText, useGSAP, motionAllowed } from '../lib/motion';
-import SystemCard from './SystemCard';
+import CodeCard from './CodeCard';
 import Magnetic from './motion/Magnetic';
 
 const socials = [
@@ -157,7 +157,7 @@ const Hero = ({ ready }) => {
           {/* Illustration */}
           <div className="relative lg:col-span-5">
             <div data-hero="card">
-              <SystemCard />
+              <CodeCard />
             </div>
             <span
               data-hero="chip"
@@ -169,13 +169,13 @@ const Hero = ({ ready }) => {
               data-hero="chip"
               className="glass animate-float-slow absolute -bottom-5 -right-3 hidden rounded-full px-3.5 py-1.5 text-xs font-semibold text-ink shadow-lg sm:inline-flex"
             >
-              Kubernetes · AKS
+              React · TypeScript
             </span>
             <span
               data-hero="chip"
               className="glass animate-float-slow absolute -right-6 top-1/3 hidden rounded-full px-3.5 py-1.5 text-xs font-semibold text-ink shadow-lg xl:inline-flex"
             >
-              Azure
+              Azure AI
             </span>
           </div>
         </div>
