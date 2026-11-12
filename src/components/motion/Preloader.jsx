@@ -3,7 +3,7 @@ import { gsap, useGSAP, motionAllowed, getLenis } from '../../lib/motion';
 
 /**
  * A short intro on every page load: the name rises into view while a 0–100
- * counter runs for a random 0.5–1s, then the curtain lifts to reveal the hero.
+ * counter runs for a random 1–3s, then the curtain lifts to reveal the hero.
  */
 const Preloader = ({ onDone }) => {
   const [show] = useState(motionAllowed);
@@ -26,7 +26,7 @@ const Preloader = ({ onDone }) => {
       if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
       window.scrollTo(0, 0);
 
-      const hold = 0.5 + Math.random() * 0.5;
+      const hold = 1 + Math.random() * 2;
       const counter = { v: 0 };
 
       const finish = () => {
